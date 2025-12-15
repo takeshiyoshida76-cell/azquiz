@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>AZ-104理解度ミニテスト</title>
+</head>
+<body>
+
+<h1>AZ-104理解度ミニテスト</h1>
+
+<div id="start">
+  氏名：
+  <input type="text" id="username" placeholder="名前を入力">
+  <br><br>
+  <button onclick="startQuiz()">テスト開始</button>
+</div>
+
+<div id="quiz" style="display:none;"></div>
+<div id="result" style="display:none;"></div>
+
+<script>
+// =====================
+// 共通処理
+// =====================
+function shuffle(array) {
+  return array
+    .map(v => ({ v, r: Math.random() }))
+    .sort((a, b) => a.r - b.r)
+    .map(o => o.v);
+}
+
+// =====================
+// 問題データ
+// =====================
+const questions = [
+
+[
+  {
+    "q": "Azure サブスクリプションでリソースを論理的にグループ化するために使用するものは何ですか？",
+    "choices": ["Resource Group", "Management Group", "Subscription", "Tag"],
+    "correct": "Resource Group"
+  },
+  {
+    "q": "Azure Policy を使用して、特定の地域へのリソース作成を禁止するにはどうしますか？",
+    "choices": ["Deny 効果のポリシー割り当て", "Audit 効果のポリシー割り当て", "Append 効果のポリシー割り当て", "DeployIfNotExists 効果のポリシー割り当て"],
+    "correct": "Deny 効果のポリシー割り当て"
+  },
+  {
+    "q": "Azure RBAC で組み込みロールとして、仮想マシンの読み取り専用アクセスを提供するのはどれですか？",
+    "choices": ["Reader", "Contributor", "Owner", "Virtual Machine Contributor"],
+    "correct": "Reader"
+  },
+  {
+    "q": "管理グループの階層でポリシーを適用する利点はどれですか？（複数選択）",
+    "choices": ["複数のサブスクリプションに一貫したガバナンスを適用できる", "コスト管理が容易になる", "リソースの移動が制限される", "アクセス制御を一元管理できる"],
+    "correct": ["複数のサブスクリプションに一貫したガバナンスを適用できる", "アクセス制御を一元管理できる"]
+  },
+  {
+    "q": "Azure Storage アカウントの冗長オプションで、ローカル冗長ストレージ (LRS) は何回のコピーを同一データセンター内に保持しますか？",
+    "choices": ["3回", "6回", "9回", "12回"],
+    "correct": "3回"
+  },
+  {
+    "q": "Blob Storage で Cool アクセス階層が適しているシナリオはどれですか？",
+    "choices": ["頻繁にアクセスされないが、すぐに利用可能が必要なデータ", "頻繁にアクセスされるデータ", "アーカイブ目的の長期保存データ", "リアルタイム分析データ"],
+    "correct": "頻繁にアクセスされないが、すぐに利用可能が必要なデータ"
+  },
+  {
+    "q": "共有アクセス署名 (SAS) の主な用途はどれですか？",
+    "choices": ["ストレージ リソースへの制限付きアクセスを委任する", "ストレージ アカウント キーの置き換え", "永続的なアクセス権限の付与", "Azure AD 認証の必須化"],
+    "correct": "ストレージ リソースへの制限付きアクセスを委任する"
+  },
+  {
+    "q": "Azure Files で SMB プロトコルを使用してオンプレミスからアクセスするには何が必要ですか？（複数選択）",
+    "choices": ["VPN または ExpressRoute", "Azure AD 認証", "ストレージ アカウント キー", "プライベート エンドポイント"],
+    "correct": ["VPN または ExpressRoute", "Azure AD 認証"]
+  },
+  {
+    "q": "仮想マシンを可用性ゾーンにデプロイする主な利点は何ですか？",
+    "choices": ["データセンター レベルの障害に対する耐性", "リージョン レベルの障害に対する耐性", "コスト削減", "パフォーマンス向上"],
+    "correct": "データセンター レベルの障害に対する耐性"
+  },
+  {
+    "q": "VM スケール セットで自動スケーリングを構成するために必要なものはどれですか？",
+    "choices": ["メトリックベースのルール", "固定インスタンス数", "手動スケーリングのみ", "可用性セット"],
+    "correct": "メトリックベースのルール"
+  },
+  {
+    "q": "Azure App Service でカスタム ドメインと TLS 証明書を構成するには何を使用しますか？",
+    "choices": ["App Service 証明書または外部証明書のアップロード", "Azure DNS のみ", "Traffic Manager", "Application Gateway"],
+    "correct": "App Service 証明書または外部証明書のアップロード"
+  },
+  {
+    "q": "Azure Container Instances (ACI) の利点はどれですか？（複数選択）",
+    "choices": ["サーバーレス コンテナ実行", "オーケストレーション不要", "永続ストレージの自動管理", "低コストの短時間実行"],
+    "correct": ["サーバーレス コンテナ実行", "オーケストレーション不要"]
+  },
+  {
+    "q": "仮想ネットワーク ピアリングの種類で、異なるリージョン間の接続を可能にするのはどれですか？",
+    "choices": ["グローバル VNet ピアリング", "リージョン VNet ピアリング", "ExpressRoute ピアリング", "サイト間 VPN"],
+    "correct": "グローバル VNet ピアリング"
+  },
+  {
+    "q": "ネットワーク セキュリティ グループ (NSG) のルール評価順序はどのように決まりますか？",
+    "choices": ["優先度 (低い数字が先に評価)", "ルール名", "作成日時", "関連付けられたサブネット"],
+    "correct": "優先度 (低い数字が先に評価)"
+  },
+  {
+    "q": "プライベート エンドポイントの主な用途は何ですか？",
+    "choices": ["パブリック インターネットを経由せずに Azure サービスにアクセス", "ロード バランシング", "DNS 解決", "トラフィック ルーティング"],
+    "correct": "パブリック インターネットを経由せずに Azure サービスにアクセス"
+  },
+  {
+    "q": "Azure Load Balancer の SKU で、ゾーン冗長をサポートするのはどれですか？",
+    "choices": ["Standard", "Basic", "Gateway", "Public のみ"],
+    "correct": "Standard"
+  },
+  {
+    "q": "Azure Monitor でアラートをトリガーするために使用するのはどれですか？",
+    "choices": ["メトリックまたはログクエリ", "リソース タグのみ", "コスト超過のみ", "手動トリガーのみ"],
+    "correct": "メトリックまたはログクエリ"
+  },
+  {
+    "q": "Azure Backup で Recovery Services コンテナーの冗長オプションとして GRS を選択する利点は何ですか？",
+    "choices": ["リージョン障害時のデータ保護", "コスト削減", "パフォーマンス向上", "即時復元"],
+    "correct": "リージョン障害時のデータ保護"
+  },
+  {
+    "q": "Network Watcher の機能として、接続の問題診断に使用するのはどれですか？",
+    "choices": ["Connection Monitor", "IP Flow Verify", "Packet Capture", "すべての以上"],
+    "correct": ["Connection Monitor", "IP Flow Verify", "Packet Capture"]
+  },
+  {
+    "q": "Azure Site Recovery でオンプレミス VM を Azure にレプリケートする際に必要なものはどれですか？（複数選択）",
+    "choices": ["Mobility サービス のインストール", "Recovery Services コンテナー", "ExpressRoute 接続", "Azure AD Connect"],
+    "correct": ["Mobility サービス のインストール", "Recovery Services コンテナー"]
+  },
+  {
+    "q": "Microsoft Entra ID (旧 Azure AD) でユーザーのパスワード リセットを許可するには何を構成しますか？",
+    "choices": ["Self-service password reset (SSPR)", "Conditional Access ポリシー", "MFA 必須", "Privileged Identity Management"],
+    "correct": "Self-service password reset (SSPR)"
+  },
+  {
+    "q": "リソース ロックの種類として、削除を防止するのはどれですか？",
+    "choices": ["Delete", "ReadOnly", "CanNotDelete", "Append"],
+    "correct": "Delete"
+  },
+  {
+    "q": "Azure Storage でライフサイクル管理ポリシーを使用して Blob を自動的に Archive 階層に移行できますか？",
+    "choices": ["はい", "いいえ"],
+    "correct": "はい"
+  },
+  {
+    "q": "VM のディスク暗号化に使用する機能はどれですか？",
+    "choices": ["Azure Disk Encryption", "BitLocker", "Storage Service Encryption", "Transparent Data Encryption"],
+    "correct": "Azure Disk Encryption"
+  },
+  {
+    "q": "Azure Bastion の主な利点はどれですか？",
+    "choices": ["VM への安全な RDP/SSH アクセス (パブリック IP 不要)", "ロード バランシング", "VPN ゲートウェイ", "ファイアウォール"],
+    "correct": "VM への安全な RDP/SSH アクセス (パブリック IP 不要)"
+  },
+  {
+    "q": "Azure DNS でプライベート ゾーンを作成する目的は何ですか？",
+    "choices": ["VNet 内からのみ解決可能なドメイン名", "パブリック DNS 解決", "グローバル ロード バランシング", "トラフィック マネージャー統合"],
+    "correct": "VNet 内からのみ解決可能なドメイン名"
+  },
+  {
+    "q": "Azure AD Connect を使用してオンプレミス Active Directory を Microsoft Entra ID と同期させる主な方法はどれですか？",
+    "choices": ["パスワード ハッシュ同期", "パススルー認証", "フェデレーション認証", "すべての以上"],
+    "correct": ["パスワード ハッシュ同期", "パススルー認証", "フェデレーション認証"]
+  },
+  {
+    "q": "Conditional Access ポリシーでリスクベースの条件を使用するには何が必要ですか？",
+    "choices": ["Microsoft Entra ID P2 ライセンス", "P1 ライセンス", "無料ライセンス", "Basic ライセンス"],
+    "correct": "Microsoft Entra ID P2 ライセンス"
+  },
+  {
+    "q": "Azure Blueprints の主な目的は何ですか？",
+    "choices": ["リソースのテンプレート、ポリシー、ロール割り当てをパッケージ化して再利用可能にする", "コスト管理のみ", "監視ダッシュボード作成", "バックアップ管理"],
+    "correct": "リソースのテンプレート、ポリシー、ロール割り当てをパッケージ化して再利用可能にする"
+  },
+  {
+    "q": "タグを使用してリソースをグループ化する主な利点はどれですか？（複数選択）",
+    "choices": ["コスト配分と請求レポート", "ポリシー適用", "アクセス制御", "自動スケーリング"],
+    "correct": ["コスト配分と請求レポート"]
+  },
+  {
+    "q": "Azure Storage アカウントでソフト削除を有効にすると何が可能です？",
+    "choices": ["誤削除したBlobを一定期間内に復元", "即時完全削除", "自動アーカイブ", "アクセス階層変更"],
+    "correct": "誤削除したBlobを一定期間内に復元"
+  },
+  {
+    "q": "Azure Data Lake Storage Gen2 で階層名前空間を有効にする利点は何ですか？",
+    "choices": ["ディレクトリ操作とPOSIX準拠のアクセス制御リスト", "コスト削減", "パフォーマンス低下", "パブリックアクセス必須"],
+    "correct": "ディレクトリ操作とPOSIX準拠のアクセス制御リスト"
+  },
+  {
+    "q": "ストレージ アカウントでファイアウォールと仮想ネットワーク ルールを構成するとどうなりますか？",
+    "choices": ["指定したVNetやIPからのみアクセス可能", "すべてのアクセスが拒否", "Azureサービスは除外されない", "キー認証が無効"],
+    "correct": "指定したVNetやIPからのみアクセス可能"
+  },
+  {
+    "q": "Azure Import/Export サービスはどのようなシナリオで使用されますか？",
+    "choices": ["大量のデータを物理ディスクでAzureにインポート/エクスポート", "リアルタイム転送", "小容量データ転送", "ストリーミングデータ"],
+    "correct": "大量のデータを物理ディスクでAzureにインポート/エクスポート"
+  },
+  {
+    "q": "可用性セットと可用性ゾーンの違いは何ですか？",
+    "choices": ["可用性セットはラックレベル、可用性ゾーンはデータセンターレベル", "可用性セットはデータセンターレベル", "可用性ゾーンはコストが高いのみ", "違いはない"],
+    "correct": "可用性セットはラックレベル、可用性ゾーンはデータセンターレベル"
+  },
+  {
+    "q": "Azure Dedicated Host の主な利点は何ですか？",
+    "choices": ["物理サーバーの独占使用とライセンス持ち込み", "コスト削減", "サーバーレス", "自動スケーリング"],
+    "correct": "物理サーバーの独占使用とライセンス持ち込み"
+  },
+  {
+    "q": "Azure Kubernetes Service (AKS) でノードプールを追加する目的は何ですか？",
+    "choices": ["異なるVMサイズやOSを使用したスケーリング", "コスト管理のみ", "ストレージ追加", "ネットワーク分離"],
+    "correct": "異なるVMサイズやOSを使用したスケーリング"
+  },
+  {
+    "q": "Azure Functions で Consumption プランと Premium プランの違いはどれですか？（複数選択）",
+    "choices": ["PremiumはプリウォームインスタンスとVNet統合", "Consumptionはコールドスタートが発生しやすい", "Premiumは無制限実行時間", "Consumptionは常時実行"],
+    "correct": ["PremiumはプリウォームインスタンスとVNet統合", "Consumptionはコールドスタートが発生しやすい"]
+  },
+  {
+    "q": "Application Gateway の WAF 機能で防止できる攻撃はどれですか？",
+    "choices": ["SQLインジェクションやXSS", "DDoSのみ", "内部脅威", "物理アクセス"],
+    "correct": "SQLインジェクションやXSS"
+  },
+  {
+    "q": "Azure Front Door の主な機能として正しいものはどれですか？（複数選択）",
+    "choices": ["グローバルロードバランシング", "WAF", "URLパスベースルーティング", "L4ロードバランシング"],
+    "correct": ["グローバルロードバランシング", "WAF", "URLパスベースルーティング"]
+  },
+  {
+    "q": "ユーザー定義ルート (UDR) を使用してトラフィックを次ホップとして仮想アプライアンスに転送できますか？",
+    "choices": ["はい", "いいえ"],
+    "correct": "はい"
+  },
+  {
+    "q": "Azure Firewall の脅威インテリジェンス ベースのフィルタリングは何をしますか？",
+    "choices": ["既知の悪意あるIPやドメインをブロック", "アプリケーション層検査のみ", "トラフィックログのみ", "コスト管理"],
+    "correct": "既知の悪意あるIPやドメインをブロック"
+  },
+  {
+    "q": "Log Analytics ワークスペースにデータを送信できるAzureリソースはどれですか？（複数選択）",
+    "choices": ["VM (エージェントインストール)", "Storage アカウント (診断設定)", "App Service", "すべてのAzureリソース"],
+    "correct": ["VM (エージェントインストール)", "Storage アカウント (診断設定)", "App Service"]
+  },
+  {
+    "q": "Azure Advisor の推奨カテゴリに含まれないものはどれですか？",
+    "choices": ["信頼性", "セキュリティ", "パフォーマンス", "高可用性", "運用卓越性"],
+    "correct": "すべてのカテゴリに含まれる（信頼性、セキュリティ、パフォーマンス、コスト、運用卓越性）"  
+  },
+  {
+    "q": "Azure Update Management を使用してVMのパッチ適用を自動化するには何が必要ですか？",
+    "choices": ["Automation アカウントとLog Analytics ワークスペース", "Azure Backup のみ", "Site Recovery", "Traffic Manager"],
+    "correct": "Automation アカウントとLog Analytics ワークスペース"
+  },
+  {
+    "q": "Azure Monitor Application Insights は主に何を監視しますか？",
+    "choices": ["Webアプリケーションのパフォーマンスと使用状況", "インフラメトリックのみ", "ネットワークトラフィック", "ストレージ容量"],
+    "correct": "Webアプリケーションのパフォーマンスと使用状況"
+  },
+  {
+    "q": "Microsoft Entra Domain Services の主な用途は何ですか？",
+    "choices": ["リフトアンドシフトアプリケーション向けの管理されたActive Directoryドメイン", "ID同期のみ", "クラウド専用ID", "ゲストユーザー管理"],
+    "correct": "リフトアンドシフトアプリケーション向けの管理されたActive Directoryドメイン"
+  },
+  {
+    "q": "Azure Resource Manager ロックの ReadOnly は何を防止しますか？",
+    "choices": ["書き込み操作（変更・削除）", "読み取りのみ", "削除のみ", "作成のみ"],
+    "correct": "書き込み操作（変更・削除）"
+  },
+  {
+    "q": "Azure Files のプレミアム階層でサポートされるのはどれですか？",
+    "choices": ["ゾーン冗長ストレージ (ZRS)", "LRSのみ", "GRSのみ", "Cool階層"],
+    "correct": "ゾーン冗長ストレージ (ZRS)"
+  },
+  {
+    "q": "Proximity Placement Group の目的は何ですか？",
+    "choices": ["低遅延のためにVMを同じデータセンターに配置", "高可用性", "コスト削減", "自動スケーリング"],
+    "correct": "低遅延のためにVMを同じデータセンターに配置"
+  },
+  {
+    "q": "Azure VPN Gateway のSKUで最高スループットを提供するのはどれですか？",
+    "choices": ["VpnGw3AZ", "Basic", "Standard", "ErGw1AZ"],
+    "correct": "VpnGw3AZ"
+  },
+  {
+    "q": "Azure DDoS Protection Standard の主な利点はどれですか？（複数選択）",
+    "choices": ["アプリケーション層の保護", "常に有効な緩和策", "トラフィック分析とアラート", "Basic プランでは保護されないボリューム攻撃"],
+    "correct": ["アプリケーション層の保護", "常に有効な緩和策", "トラフィック分析とアラート"]
+  },
+  {
+    "q": "Service Endpoint と Private Endpoint の違いは何ですか？",
+    "choices": ["Service Endpoint はパブリックIP経由、Private Endpoint はプライベートIP経由", "Service Endpoint はプライベートIP経由、Private Endpoint はパブリックIP経由", "どちらも同じ", "Service Endpoint はコストがかかる"],
+    "correct": "Service Endpoint はパブリックIP経由、Private Endpoint はプライベートIP経由"
+  },
+  {
+    "q": "Azure Key Vault でシークレットをローテーションするために使用できる機能はどれですか？",
+    "choices": ["管理されたIDとイベント駆動のローテーション", "手動更新のみ", "Azure Policy のみ", "自動バックアップのみ"],
+    "correct": "管理されたIDとイベント駆動のローテーション"
+  },
+  {
+    "q": "Azure Policy の Initiative とは何ですか？",
+    "choices": ["複数のポリシーをまとめたセット", "単一のポリシー", "ロール割り当て", "ブループリント"],
+    "correct": "複数のポリシーをまとめたセット"
+  },
+  {
+    "q": "Azure Cost Management で予算アラートを設定できる対象はどれですか？",
+    "choices": ["サブスクリプション、管理グループ、課金アカウント", "リソースグループのみ", "個別リソースのみ", "タグのみ"],
+    "correct": "サブスクリプション、管理グループ、課金アカウント"
+  },
+  {
+    "q": "Azure Blob Storage のバージョニングを有効にすると何が可能になりますか？",
+    "choices": ["過去のバージョンの復元や参照", "自動削除", "アクセス階層の自動変更", "暗号化の強化"],
+    "correct": "過去のバージョンの復元や参照"
+  },
+  {
+    "q": "Azure NetApp Files の主な用途はどれですか？",
+    "choices": ["エンタープライズ向けの高性能ファイル共有 (NFS/SMB)", "オブジェクトストレージ", "アーカイブ専用", "一時ファイルのみ"],
+    "correct": "エンタープライズ向けの高性能ファイル共有 (NFS/SMB)"
+  },
+  {
+    "q": "Azure Disk Storage で Premium SSD v2 の特徴はどれですか？",
+    "choices": ["IOPSとスループットを独立してスケーリング可能", "固定サイズのみ", "ゾーン冗長不可", "低コスト優先"],
+    "correct": "IOPSとスループットを独立してスケーリング可能"
+  },
+  {
+    "q": "Azure VM でホストキャッシュの設定として「ReadOnly」が適しているディスクはどれですか？",
+    "choices": ["読み取りが多いデータディスク", "OSディスク", "書き込みが多いデータベース", "一時ディスク"],
+    "correct": "読み取りが多いデータディスク"
+  },
+  {
+    "q": "Azure Spot Virtual Machines の主な特徴はどれですか？",
+    "choices": ["低コストだがAzureによりいつでも強制退去可能", "高可用性保証", "予約インスタンスより高い", "常時稼働保証"],
+    "correct": "低コストだがAzureによりいつでも強制退去可能"
+  },
+  {
+    "q": "Azure App Service の Deployment Slots の主な用途はどれですか？（複数選択）",
+    "choices": ["ステージング環境でのテスト", "ゼロダウンタイムデプロイ", "トラフィックのスワップ", "コスト削減"],
+    "correct": ["ステージング環境でのテスト", "ゼロダウンタイムデプロイ", "トラフィックのスワップ"]
+  },
+  {
+    "q": "Azure Container Apps と Azure Container Instances の違いはどれですか？",
+    "choices": ["Container Apps はマイクロサービス向けのサーバーレスオーケストレーション、ACI は単一コンテナ実行", "ACI のほうがスケーラブル", "Container Apps はVNet統合不可", "違いはない"],
+    "correct": "Container Apps はマイクロサービス向けのサーバーレスオーケストレーション、ACI は単一コンテナ実行"
+  },
+  {
+    "q": "Azure Virtual Network のサービスエンドポイントがサポートする主なサービスはどれですか？（複数選択）",
+    "choices": ["Azure Storage", "Azure SQL Database", "Azure Cosmos DB", "Azure Key Vault"],
+    "correct": ["Azure Storage", "Azure SQL Database", "Azure Cosmos DB", "Azure Key Vault"]
+  },
+  {
+    "q": "Azure ExpressRoute の利点として正しいものはどれですか？（複数選択）",
+    "choices": ["プライベート接続", "高い信頼性と低遅延", "パブリックインターネットを経由しない", "コストが安い"],
+    "correct": ["プライベート接続", "高い信頼性と低遅延", "パブリックインターネットを経由しない"]
+  },
+  {
+    "q": "Network Security Group (NSG) と Application Security Group (ASG) の組み合わせの利点は何ですか？",
+    "choices": ["ルールをVM単位ではなくグループ単位で管理可能", "コスト削減", "トラフィック増加", "パブリックアクセス必須"],
+    "correct": "ルールをVM単位ではなくグループ単位で管理可能"
+  },
+  {
+    "q": "Azure Firewall Manager の主な機能はどれですか？",
+    "choices": ["複数のAzure Firewallを集中管理し、ポリシーを一元適用", "単一ファイアウォール管理のみ", "DDoS保護のみ", "DNS管理"],
+    "correct": "複数のAzure Firewallを集中管理し、ポリシーを一元適用"
+  },
+  {
+    "q": "Activity Log の保持期間をデフォルトから延長するにはどうしますか？",
+    "choices": ["Log Analytics ワークスペースまたはストレージアカウントにエクスポート", "Azure Policy で変更", "ポータルで直接変更", "不可能"],
+    "correct": "Log Analytics ワークスペースまたはストレージアカウントにエクスポート"
+  },
+  {
+    "q": "Azure Backup で VM のバックアップ時にアプリケーション整合性を確保するには何を使用しますか？",
+    "choices": ["VSS (Volume Shadow Copy Service)", "ファイルシステム整合性のみ", "クラッシュ整合性のみ", "手動停止が必要"],
+    "correct": "VSS (Volume Shadow Copy Service)"
+  },
+  {
+    "q": "Azure Monitor のメトリックアラートとログアラートの違いは何ですか？",
+    "choices": ["メトリックはリアルタイム、ログはKQLクエリで遅延あり", "ログアラートがリアルタイム", "違いはない", "メトリックは高コスト"],
+    "correct": "メトリックはリアルタイム、ログはKQLクエリで遅延あり"
+  },
+  {
+    "q": "Azure Automation で使用できる機能として正しいものはどれですか？（複数選択）",
+    "choices": ["Runbookによる自動化", "Update Management", "Change Tracking", "Desired State Configuration"],
+    "correct": ["Runbookによる自動化", "Update Management", "Change Tracking", "Desired State Configuration"]
+  },
+  {
+    "q": "Privileged Identity Management (PIM) で「適格な割り当て」とは何ですか？",
+    "choices": ["必要なときだけ一時的にロールをアクティブ化", "永続的な管理者権限", "読み取り専用", "自動承認"],
+    "correct": "必要なときだけ一時的にロールをアクティブ化"
+  },
+  {
+    "q": "Azure Resource Graph の主な用途は何ですか？",
+    "choices": ["大規模環境でのリソース検索とクエリ実行", "コスト分析のみ", "監視ダッシュボード", "バックアップ管理"],
+    "correct": "大規模環境でのリソース検索とクエリ実行"
+  },
+  {
+    "q": "Azure Storage アカウントで変更フィードを有効にする目的は何ですか？",
+    "choices": ["Blobの変更をリアルタイムで追跡（Change Data Capture用途）", "自動バックアップ", "アクセスログ記録", "暗号化強化"],
+    "correct": "Blobの変更をリアルタイムで追跡（Change Data Capture用途）"
+  },
+  {
+    "q": "Azure VM の予約インスタンスを購入すると最大で何％の割引が受けられますか？",
+    "choices": ["最大72％", "最大50％", "最大30％", "割引なし"],
+    "correct": "最大72％"
+  },
+  {
+    "q": "Azure Traffic Manager のルーティング方法で「Performance」が使用する基準は何ですか？",
+    "choices": ["ユーザーに最も近いエンドポイント（最低遅延）", "優先順位", "重み付け", "地理的地域"],
+    "correct": "ユーザーに最も近いエンドポイント（最低遅延）"
+  }
+];
+
+// =====================
+// 出題処理
+// =====================
+let quizQuestions = [];
+let userAnswers = [];
+
+function startQuiz() {
+  const name = document.getElementById("username").value.trim();
+  if (!name) {
+    alert("氏名を入力してください");
+    return;
+  }
+
+  quizQuestions = shuffle([...questions]).slice(0, 10);
+
+  document.getElementById("start").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = "";
+
+  quizQuestions.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.innerHTML = `<p><strong>${i + 1}. ${q.q}</strong></p>`;
+
+    const shuffled = shuffle([...q.choices]);
+    const type = Array.isArray(q.correct) ? "checkbox" : "radio";
+
+    shuffled.forEach(c => {
+      div.innerHTML += `
+        <label>
+          <input type="${type}" name="q${i}" value="${c}"> ${c}
+        </label><br>`;
+    });
+    div.innerHTML += "<br>";
+    quiz.appendChild(div);
+  });
+
+  quiz.innerHTML += `<button onclick="finish()">回答終了</button>`;
+}
+
+function finish() {
+  let score = 0;
+  userAnswers = [];
+
+  quizQuestions.forEach((q, i) => {
+    const checked = [...document.querySelectorAll(`input[name="q${i}"]:checked`)]
+      .map(el => el.value);
+
+    userAnswers.push(checked);
+
+    if (Array.isArray(q.correct)) {
+      if (checked.length === q.correct.length && checked.every(v => q.correct.includes(v))) {
+        score++;
+      }
+    } else {
+      if (checked.length === 1 && checked[0] === q.correct) score++;
+    }
+  });
+
+  showResult(score);
+}
+
+function showResult(score) {
+  document.getElementById("quiz").style.display = "none";
+  const result = document.getElementById("result");
+  result.style.display = "block";
+
+  let html = `<h2>結果：${score} / 10</h2>`;
+
+  if (score >= 8) {
+    html += `<p><strong style="color:blue;font-size:1.5em;">合格おめでとうございます！</strong></p>`;
+    html += `<button onclick="downloadCert(${score})">合格証を表示・ダウンロード</button>`;
+    html += `<p style="font-size:0.9em;">
+      ※ iPhoneをご利用の場合は、表示された合格証の内容を長押ししてコピーし、メモアプリ等に貼り付けて保存してください。
+    </p>`;
+  } else {
+    html += `<p><strong style="color:red;font-size:1.5em;">不合格</strong>（8点以上で合格です）</p>`;
+  }
+
+  // 答え合わせをそのまま表示
+  html += `<h2 style="margin-top:40px;">答え合わせ</h2>`;
+
+  quizQuestions.forEach((q, i) => {
+    const user = userAnswers[i];
+    const correct = Array.isArray(q.correct) ? q.correct : [q.correct];
+
+    const isCorrect = user.length === correct.length && 
+                      user.every(v => correct.includes(v)) && 
+                      correct.every(v => user.includes(v));
+
+    const userText = user.length > 0 ? user.join("、") : "未回答";
+    const correctText = correct.join("、");
+
+    html += `<hr>`;
+    html += `<p><strong>Q${i + 1}. ${q.q}</strong></p>`;
+    html += `<p>あなたの回答： ${userText}</p>`;
+    html += `<p>正答： <span style="color:green;font-weight:bold;">${correctText}</span></p>`;
+    html += `<p>判定： ${isCorrect ? "✅ 正解" : "❌ 不正解"}</p>`;
+  });
+
+  result.innerHTML = html;
+}
+
+function downloadCert(score) {
+  const name = document.getElementById("username").value.trim();
+  const date = new Date().toLocaleDateString("ja-JP");
+
+  const text = `合格証
+
+氏名：${name}
+得点：${score} / 10
+判定：合格
+発行日：${date}
+
+おめでとうございます！`;
+
+  const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+  const blob = new Blob([bom, text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>
