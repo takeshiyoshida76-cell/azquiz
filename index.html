@@ -920,9 +920,9 @@ const questions = [
       "$Role = Add-AzRoleDefinition -Name $RoleName",
       "$Role = Get-AzRoleAssignment -Name $RoleName",
       "$Role = Set-AzRoleAssignment -Name $RoleName",
-      "$RoleName = \"CustomRole1\""
+      "$RoleName = ”CustomRole1”"
     ],
-    "correct": "$RoleName = \"CustomRole1\""
+    "correct": "$RoleName = ”CustomRole1”"
   },
   {
     "q": "複数のストレージ アカウントを含む Azure サブスクリプションがあります。ユーザーに次の操作を行う権限を付与する必要があります。\n\n- ストレージ アカウント内のコンテナーを管理する\n- ストレージ アカウントのアクセス キーを表示する\n\n最小権限の原則に従うには、どのロールを割り当てるべきですか？",
@@ -941,6 +941,7 @@ const questions = [
       "課金管理者",
       "グローバル管理者",
       "サービス管理者"
+
     ],
     "correct": "ユーザー管理者"
   },
@@ -1040,84 +1041,30 @@ function renderQuiz() {
   quiz.innerHTML += `<button onclick="finish()">回答終了</button>`;
 }
 
-function finish() {
-  const quizDiv = document.getElementById("quiz");
-  const resultDiv = document.getElementById("result");
-  let score = 0;
-
-  // クイズ内の各問題ブロックを取得
-  const questionBlocks = quizDiv.querySelectorAll(".question-block");
-
-  questionBlocks.forEach((block, index) => {
-    const selectedInputs = block.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
-    
-    // 選択肢の文字列を配列に取得
-    const selectedAnswers = Array.from(selectedInputs).map(input => {
-      // ラベルのテキストを取得
-      const label = block.querySelector(`label[for="${input.id}"]`);
-      return label.textContent.trim();
-    });
-
-    const correctAnswer = questions[index].correct;
-
-    // 配列か文字列かで比較
-    let isCorrect = false;
-    if (Array.isArray(correctAnswer)) {
-      // 配列の場合、選択肢と正答の両方をソートして比較
-      isCorrect = selectedAnswers.length === correctAnswer.length &&
-                  selectedAnswers.slice().sort().every((val, i) => val === correctAnswer.slice().sort()[i]);
-    } else {
-      // 単一回答の場合
-      isCorrect = selectedAnswers[0] === correctAnswer;
-    }
-
-    if (isCorrect) score++;
-  });
-
-  quizDiv.style.display = "none";
-  resultDiv.style.display = "block";
-  resultDiv.innerHTML = `<h2>結果: ${score} / ${questionBlocks.length}</h2>`;
-}
 // =====================
 // 採点処理
 // =====================
 function finish() {
-  const quizDiv = document.getElementById("quiz");
-  const resultDiv = document.getElementById("result");
   let score = 0;
+  userAnswers = [];
 
-  // クイズ内の各問題ブロックを取得
-  const questionBlocks = quizDiv.querySelectorAll(".question-block");
+  quizQuestions.forEach((q, i) => {
+    const checked = [...document.querySelectorAll(`input[name="q${i}"]:checked`)]
+      .map(el => el.value);
 
-  questionBlocks.forEach((block, index) => {
-    const selectedInputs = block.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked')
-    
-    // 選択肢の文字列を配列に取得
-    const selectedAnswers = Array.from(selectedInputs).map(input => {
-      // ラベルのテキストを取得
-      const label = block.querySelector(`label[for="${input.id}"]`);
-      return label.textContent.trim();
-    });
+    userAnswers.push(checked);
 
-    const correctAnswer = questions[index].correct;
-
-    // 配列か文字列かで比較
-    let isCorrect = false;
-    if (Array.isArray(correctAnswer)) {
-      // 配列の場合、選択肢と正答の両方をソートして比較
-      isCorrect = selectedAnswers.length === correctAnswer.length &&
-                  selectedAnswers.slice().sort().every((val, i) => val === correctAnswer.slice().sort()[i]);
+    if (Array.isArray(q.correct)) {
+      if (checked.length === q.correct.length && checked.every(v => q.correct.includes(v))) {
+        score++;
+      }
     } else {
-      // 単一回答の場合
-      isCorrect = selectedAnswers[0] === correctAnswer;
+      if (checked.length === 1 && checked[0] === q.correct) score++;
     }
-
-    if (isCorrect) score++;
   });
 
-  quizDiv.style.display = "none";
-  resultDiv.style.display = "block";
-  resultDiv.innerHTML = `<h2>結果: ${score} / ${questionBlocks.length}</h2>`;
+  const requiredScore = Math.ceil(quizQuestions.length * 0.8); // 80%切り上げ
+  showResult(score, requiredScore);
 }
 
 // =====================
