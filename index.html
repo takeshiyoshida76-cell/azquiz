@@ -38,938 +38,1650 @@ function shuffle(array) {
 // 問題データ
 // =====================
 const questions = [
-  {
-    "q": "Azure サブスクリプションでリソースを論理的にグループ化するために使用するものは何ですか？",
-    "choices": ["Resource Group", "Management Group", "Subscription", "Tag"],
-    "correct": "Resource Group"
-  },
-  {
-    "q": "Azure Policy を使用して、特定の地域へのリソース作成を禁止するにはどうしますか？",
-    "choices": ["Deny 効果のポリシー割り当て", "Audit 効果のポリシー割り当て", "Append 効果のポリシー割り当て", "DeployIfNotExists 効果のポリシー割り当て"],
-    "correct": "Deny 効果のポリシー割り当て"
-  },
-  {
-    "q": "Azure RBAC で組み込みロールとして、仮想マシンの読み取り専用アクセスを提供するのはどれですか？",
-    "choices": ["Reader", "Contributor", "Owner", "Virtual Machine Contributor"],
-    "correct": "Reader"
-  },
-  {
-    "q": "管理グループの階層でポリシーを適用する利点はどれですか？（複数選択）",
-    "choices": ["複数のサブスクリプションに一貫したガバナンスを適用できる", "コスト管理が容易になる", "リソースの移動が制限される", "アクセス制御を一元管理できる"],
-    "correct": ["複数のサブスクリプションに一貫したガバナンスを適用できる", "アクセス制御を一元管理できる"]
-  },
-  {
-    "q": "Azure Storage アカウントの冗長オプションで、ローカル冗長ストレージ (LRS) は何回のコピーを同一データセンター内に保持しますか？",
-    "choices": ["3回", "6回", "9回", "12回"],
-    "correct": "3回"
-  },
-  {
-    "q": "Blob Storage で Cool アクセス階層が適しているシナリオはどれですか？",
-    "choices": ["頻繁にアクセスされないが、すぐに利用可能が必要なデータ", "頻繁にアクセスされるデータ", "アーカイブ目的の長期保存データ", "リアルタイム分析データ"],
-    "correct": "頻繁にアクセスされないが、すぐに利用可能が必要なデータ"
-  },
-  {
-    "q": "共有アクセス署名 (SAS) の主な用途はどれですか？",
-    "choices": ["ストレージ リソースへの制限付きアクセスを委任する", "ストレージ アカウント キーの置き換え", "永続的なアクセス権限の付与", "Azure AD 認証の必須化"],
-    "correct": "ストレージ リソースへの制限付きアクセスを委任する"
-  },
-  {
-    "q": "Azure Files で SMB プロトコルを使用してオンプレミスからアクセスするには何が必要ですか？（複数選択）",
-    "choices": ["VPN または ExpressRoute", "Azure AD 認証", "ストレージ アカウント キー", "プライベート エンドポイント"],
-    "correct": ["VPN または ExpressRoute", "Azure AD 認証"]
-  },
-  {
-    "q": "仮想マシンを可用性ゾーンにデプロイする主な利点は何ですか？",
-    "choices": ["データセンター レベルの障害に対する耐性", "リージョン レベルの障害に対する耐性", "コスト削減", "パフォーマンス向上"],
-    "correct": "データセンター レベルの障害に対する耐性"
-  },
-  {
-    "q": "VM スケール セットで自動スケーリングを構成するために必要なものはどれですか？",
-    "choices": ["メトリックベースのルール", "固定インスタンス数", "手動スケーリングのみ", "可用性セット"],
-    "correct": "メトリックベースのルール"
-  },
-  {
-    "q": "Azure App Service でカスタム ドメインと TLS 証明書を構成するには何を使用しますか？",
-    "choices": ["App Service 証明書または外部証明書のアップロード", "Azure DNS のみ", "Traffic Manager", "Application Gateway"],
-    "correct": "App Service 証明書または外部証明書のアップロード"
-  },
-  {
-    "q": "Azure Container Instances (ACI) の利点はどれですか？（複数選択）",
-    "choices": ["サーバーレス コンテナ実行", "オーケストレーション不要", "永続ストレージの自動管理", "低コストの短時間実行"],
-    "correct": ["サーバーレス コンテナ実行", "オーケストレーション不要"]
-  },
-  {
-    "q": "仮想ネットワーク ピアリングの種類で、異なるリージョン間の接続を可能にするのはどれですか？",
-    "choices": ["グローバル VNet ピアリング", "リージョン VNet ピアリング", "ExpressRoute ピアリング", "サイト間 VPN"],
-    "correct": "グローバル VNet ピアリング"
-  },
-  {
-    "q": "ネットワーク セキュリティ グループ (NSG) のルール評価順序はどのように決まりますか？",
-    "choices": ["優先度 (低い数字が先に評価)", "ルール名", "作成日時", "関連付けられたサブネット"],
-    "correct": "優先度 (低い数字が先に評価)"
-  },
-  {
-    "q": "プライベート エンドポイントの主な用途は何ですか？",
-    "choices": ["パブリック インターネットを経由せずに Azure サービスにアクセス", "ロード バランシング", "DNS 解決", "トラフィック ルーティング"],
-    "correct": "パブリック インターネットを経由せずに Azure サービスにアクセス"
-  },
-  {
-    "q": "Azure Load Balancer の SKU で、ゾーン冗長をサポートするのはどれですか？",
-    "choices": ["Standard", "Basic", "Gateway", "Public のみ"],
-    "correct": "Standard"
-  },
-  {
-    "q": "Azure Monitor でアラートをトリガーするために使用するのはどれですか？",
-    "choices": ["メトリックまたはログクエリ", "リソース タグのみ", "コスト超過のみ", "手動トリガーのみ"],
-    "correct": "メトリックまたはログクエリ"
-  },
-  {
-    "q": "Azure Backup で Recovery Services コンテナーの冗長オプションとして GRS を選択する利点は何ですか？",
-    "choices": ["リージョン障害時のデータ保護", "コスト削減", "パフォーマンス向上", "即時復元"],
-    "correct": "リージョン障害時のデータ保護"
-  },
-  {
-    "q": "Network Watcher の機能として、接続の問題診断に使用するのはどれですか？",
-    "choices": ["Connection Monitor", "IP Flow Verify", "Packet Capture", "すべての以上"],
-    "correct": ["Connection Monitor", "IP Flow Verify", "Packet Capture"]
-  },
-  {
-    "q": "Azure Site Recovery でオンプレミス VM を Azure にレプリケートする際に必要なものはどれですか？（複数選択）",
-    "choices": ["Mobility サービス のインストール", "Recovery Services コンテナー", "ExpressRoute 接続", "Azure AD Connect"],
-    "correct": ["Mobility サービス のインストール", "Recovery Services コンテナー"]
-  },
-  {
-    "q": "Microsoft Entra ID (旧 Azure AD) でユーザーのパスワード リセットを許可するには何を構成しますか？",
-    "choices": ["Self-service password reset (SSPR)", "Conditional Access ポリシー", "MFA 必須", "Privileged Identity Management"],
-    "correct": "Self-service password reset (SSPR)"
-  },
-  {
-    "q": "リソース ロックの種類として、削除を防止するのはどれですか？",
-    "choices": ["Delete", "ReadOnly", "CanNotDelete", "Append"],
-    "correct": "Delete"
-  },
-  {
-    "q": "Azure Storage でライフサイクル管理ポリシーを使用して Blob を自動的に Archive 階層に移行できますか？",
-    "choices": ["はい", "いいえ"],
-    "correct": "はい"
-  },
-  {
-    "q": "VM のディスク暗号化に使用する機能はどれですか？",
-    "choices": ["Azure Disk Encryption", "BitLocker", "Storage Service Encryption", "Transparent Data Encryption"],
-    "correct": "Azure Disk Encryption"
-  },
-  {
-    "q": "Azure Bastion の主な利点はどれですか？",
-    "choices": ["VM への安全な RDP/SSH アクセス (パブリック IP 不要)", "ロード バランシング", "VPN ゲートウェイ", "ファイアウォール"],
-    "correct": "VM への安全な RDP/SSH アクセス (パブリック IP 不要)"
-  },
-  {
-    "q": "Azure DNS でプライベート ゾーンを作成する目的は何ですか？",
-    "choices": ["VNet 内からのみ解決可能なドメイン名", "パブリック DNS 解決", "グローバル ロード バランシング", "トラフィック マネージャー統合"],
-    "correct": "VNet 内からのみ解決可能なドメイン名"
-  },
-  {
-    "q": "Azure AD Connect を使用してオンプレミス Active Directory を Microsoft Entra ID と同期させる主な方法はどれですか？",
-    "choices": ["パスワード ハッシュ同期", "パススルー認証", "フェデレーション認証", "すべての以上"],
-    "correct": ["パスワード ハッシュ同期", "パススルー認証", "フェデレーション認証"]
-  },
-  {
-    "q": "Conditional Access ポリシーでリスクベースの条件を使用するには何が必要ですか？",
-    "choices": ["Microsoft Entra ID P2 ライセンス", "P1 ライセンス", "無料ライセンス", "Basic ライセンス"],
-    "correct": "Microsoft Entra ID P2 ライセンス"
-  },
-  {
-    "q": "Azure Blueprints の主な目的は何ですか？",
-    "choices": ["リソースのテンプレート、ポリシー、ロール割り当てをパッケージ化して再利用可能にする", "コスト管理のみ", "監視ダッシュボード作成", "バックアップ管理"],
-    "correct": "リソースのテンプレート、ポリシー、ロール割り当てをパッケージ化して再利用可能にする"
-  },
-  {
-    "q": "タグを使用してリソースをグループ化する主な利点はどれですか？（複数選択）",
-    "choices": ["コスト配分と請求レポート", "ポリシー適用", "アクセス制御", "自動スケーリング"],
-    "correct": ["コスト配分と請求レポート", "ポリシー適用", "アクセス制御"]
-  },
-  {
-    "q": "Azure Storage アカウントでソフト削除を有効にすると何が可能です？",
-    "choices": ["誤削除したBlobを一定期間内に復元", "即時完全削除", "自動アーカイブ", "アクセス階層変更"],
-    "correct": "誤削除したBlobを一定期間内に復元"
-  },
-  {
-    "q": "Azure Data Lake Storage Gen2 で階層名前空間を有効にする利点は何ですか？",
-    "choices": ["ディレクトリ操作とPOSIX準拠のアクセス制御リスト", "コスト削減", "パフォーマンス低下", "パブリックアクセス必須"],
-    "correct": "ディレクトリ操作とPOSIX準拠のアクセス制御リスト"
-  },
-  {
-    "q": "ストレージ アカウントでファイアウォールと仮想ネットワーク ルールを構成するとどうなりますか？",
-    "choices": ["指定したVNetやIPからのみアクセス可能", "すべてのアクセスが拒否", "Azureサービスは除外されない", "キー認証が無効"],
-    "correct": "指定したVNetやIPからのみアクセス可能"
-  },
-  {
-    "q": "Azure Import/Export サービスはどのようなシナリオで使用されますか？",
-    "choices": ["大量のデータを物理ディスクでAzureにインポート/エクスポート", "リアルタイム転送", "小容量データ転送", "ストリーミングデータ"],
-    "correct": "大量のデータを物理ディスクでAzureにインポート/エクスポート"
-  },
-  {
-    "q": "可用性セットと可用性ゾーンの違いは何ですか？",
-    "choices": ["可用性セットはラックレベル、可用性ゾーンはデータセンターレベル", "可用性セットはデータセンターレベル", "可用性ゾーンはコストが高いのみ", "違いはない"],
-    "correct": "可用性セットはラックレベル、可用性ゾーンはデータセンターレベル"
-  },
-  {
-    "q": "Azure Dedicated Host の主な利点は何ですか？",
-    "choices": ["物理サーバーの独占使用とライセンス持ち込み", "コスト削減", "サーバーレス", "自動スケーリング"],
-    "correct": "物理サーバーの独占使用とライセンス持ち込み"
-  },
-  {
-    "q": "Azure Kubernetes Service (AKS) でノードプールを追加する目的は何ですか？",
-    "choices": ["異なるVMサイズやOSを使用したスケーリング", "コスト管理のみ", "ストレージ追加", "ネットワーク分離"],
-    "correct": "異なるVMサイズやOSを使用したスケーリング"
-  },
-  {
-    "q": "Azure Functions で Consumption プランと Premium プランの違いはどれですか？（複数選択）",
-    "choices": ["PremiumはプリウォームインスタンスとVNet統合", "Consumptionはコールドスタートが発生しやすい", "Premiumは無制限実行時間", "Consumptionは常時実行"],
-    "correct": ["PremiumはプリウォームインスタンスとVNet統合", "Consumptionはコールドスタートが発生しやすい"]
-  },
-  {
-    "q": "Application Gateway の WAF 機能で防止できる攻撃はどれですか？",
-    "choices": ["SQLインジェクションやXSS", "DDoSのみ", "内部脅威", "物理アクセス"],
-    "correct": "SQLインジェクションやXSS"
-  },
-  {
-    "q": "Azure Front Door の主な機能として正しいものはどれですか？（複数選択）",
-    "choices": ["グローバルロードバランシング", "WAF", "URLパスベースルーティング", "L4ロードバランシング"],
-    "correct": ["グローバルロードバランシング", "WAF", "URLパスベースルーティング"]
-  },
-  {
-    "q": "ユーザー定義ルート (UDR) を使用してトラフィックを次ホップとして仮想アプライアンスに転送できますか？",
-    "choices": ["はい", "いいえ"],
-    "correct": "はい"
-  },
-  {
-    "q": "Azure Firewall の脅威インテリジェンス ベースのフィルタリングは何をしますか？",
-    "choices": ["既知の悪意あるIPやドメインをブロック", "アプリケーション層検査のみ", "トラフィックログのみ", "コスト管理"],
-    "correct": "既知の悪意あるIPやドメインをブロック"
-  },
-  {
-    "q": "Log Analytics ワークスペースにデータを送信できるAzureリソースはどれですか？（複数選択）",
-    "choices": ["VM (エージェントインストール)", "Storage アカウント (診断設定)", "App Service", "すべてのAzureリソース"],
-    "correct": ["VM (エージェントインストール)", "Storage アカウント (診断設定)", "App Service"]
-  },
-  {
-    "q": "Azure Advisor の推奨カテゴリに含まれないものはどれですか？",
-    "choices": ["信頼性", "セキュリティ", "パフォーマンス", "高可用性", "運用卓越性"],
-    "correct": "すべてのカテゴリに含まれる（信頼性、セキュリティ、パフォーマンス、コスト、運用卓越性）"  
-  },
-  {
-    "q": "Azure Update Management を使用してVMのパッチ適用を自動化するには何が必要ですか？",
-    "choices": ["Automation アカウントとLog Analytics ワークスペース", "Azure Backup のみ", "Site Recovery", "Traffic Manager"],
-    "correct": "Automation アカウントとLog Analytics ワークスペース"
-  },
-  {
-    "q": "Azure Monitor Application Insights は主に何を監視しますか？",
-    "choices": ["Webアプリケーションのパフォーマンスと使用状況", "インフラメトリックのみ", "ネットワークトラフィック", "ストレージ容量"],
-    "correct": "Webアプリケーションのパフォーマンスと使用状況"
-  },
-  {
-    "q": "Microsoft Entra Domain Services の主な用途は何ですか？",
-    "choices": ["リフトアンドシフトアプリケーション向けの管理されたActive Directoryドメイン", "ID同期のみ", "クラウド専用ID", "ゲストユーザー管理"],
-    "correct": "リフトアンドシフトアプリケーション向けの管理されたActive Directoryドメイン"
-  },
-  {
-    "q": "Azure Resource Manager ロックの ReadOnly は何を防止しますか？",
-    "choices": ["書き込み操作（変更・削除）", "読み取りのみ", "削除のみ", "作成のみ"],
-    "correct": "書き込み操作（変更・削除）"
-  },
-  {
-    "q": "Azure Files のプレミアム階層でサポートされるのはどれですか？",
-    "choices": ["ゾーン冗長ストレージ (ZRS)", "LRSのみ", "GRSのみ", "Cool階層"],
-    "correct": "ゾーン冗長ストレージ (ZRS)"
-  },
-  {
-    "q": "Proximity Placement Group の目的は何ですか？",
-    "choices": ["低遅延のためにVMを同じデータセンターに配置", "高可用性", "コスト削減", "自動スケーリング"],
-    "correct": "低遅延のためにVMを同じデータセンターに配置"
-  },
-  {
-    "q": "Azure VPN Gateway のSKUで最高スループットを提供するのはどれですか？",
-    "choices": ["VpnGw3AZ", "Basic", "Standard", "ErGw1AZ"],
-    "correct": "VpnGw3AZ"
-  },
-  {
-    "q": "Azure DDoS Protection Standard の主な利点はどれですか？（複数選択）",
-    "choices": ["アプリケーション層の保護", "常に有効な緩和策", "トラフィック分析とアラート", "Basic プランでは保護されないボリューム攻撃"],
-    "correct": ["アプリケーション層の保護", "常に有効な緩和策", "トラフィック分析とアラート"]
-  },
-  {
-    "q": "Service Endpoint と Private Endpoint の違いは何ですか？",
-    "choices": ["Service Endpoint はパブリックIP経由、Private Endpoint はプライベートIP経由", "Service Endpoint はプライベートIP経由、Private Endpoint はパブリックIP経由", "どちらも同じ", "Service Endpoint はコストがかかる"],
-    "correct": "Service Endpoint はパブリックIP経由、Private Endpoint はプライベートIP経由"
-  },
-  {
-    "q": "Azure Key Vault でシークレットをローテーションするために使用できる機能はどれですか？",
-    "choices": ["管理されたIDとイベント駆動のローテーション", "手動更新のみ", "Azure Policy のみ", "自動バックアップのみ"],
-    "correct": "管理されたIDとイベント駆動のローテーション"
-  },
-  {
-    "q": "Azure Policy の Initiative とは何ですか？",
-    "choices": ["複数のポリシーをまとめたセット", "単一のポリシー", "ロール割り当て", "ブループリント"],
-    "correct": "複数のポリシーをまとめたセット"
-  },
-  {
-    "q": "Azure Cost Management で予算アラートを設定できる対象はどれですか？",
-    "choices": ["サブスクリプション、管理グループ、課金アカウント", "リソースグループのみ", "個別リソースのみ", "タグのみ"],
-    "correct": "サブスクリプション、管理グループ、課金アカウント"
-  },
-  {
-    "q": "Azure Blob Storage のバージョニングを有効にすると何が可能になりますか？",
-    "choices": ["過去のバージョンの復元や参照", "自動削除", "アクセス階層の自動変更", "暗号化の強化"],
-    "correct": "過去のバージョンの復元や参照"
-  },
-  {
-    "q": "Azure NetApp Files の主な用途はどれですか？",
-    "choices": ["エンタープライズ向けの高性能ファイル共有 (NFS/SMB)", "オブジェクトストレージ", "アーカイブ専用", "一時ファイルのみ"],
-    "correct": "エンタープライズ向けの高性能ファイル共有 (NFS/SMB)"
-  },
-  {
-    "q": "Azure Disk Storage で Premium SSD v2 の特徴はどれですか？",
-    "choices": ["IOPSとスループットを独立してスケーリング可能", "固定サイズのみ", "ゾーン冗長不可", "低コスト優先"],
-    "correct": "IOPSとスループットを独立してスケーリング可能"
-  },
-  {
-    "q": "Azure VM でホストキャッシュの設定として「ReadOnly」が適しているディスクはどれですか？",
-    "choices": ["読み取りが多いデータディスク", "OSディスク", "書き込みが多いデータベース", "一時ディスク"],
-    "correct": "読み取りが多いデータディスク"
-  },
-  {
-    "q": "Azure Spot Virtual Machines の主な特徴はどれですか？",
-    "choices": ["低コストだがAzureによりいつでも強制退去可能", "高可用性保証", "予約インスタンスより高い", "常時稼働保証"],
-    "correct": "低コストだがAzureによりいつでも強制退去可能"
-  },
-  {
-    "q": "Azure App Service の Deployment Slots の主な用途はどれですか？（複数選択）",
-    "choices": ["ステージング環境でのテスト", "ゼロダウンタイムデプロイ", "トラフィックのスワップ", "コスト削減"],
-    "correct": ["ステージング環境でのテスト", "ゼロダウンタイムデプロイ", "トラフィックのスワップ"]
-  },
-  {
-    "q": "Azure Container Apps と Azure Container Instances の違いはどれですか？",
-    "choices": ["Container Apps はマイクロサービス向けのサーバーレスオーケストレーション、ACI は単一コンテナ実行", "ACI のほうがスケーラブル", "Container Apps はVNet統合不可", "違いはない"],
-    "correct": "Container Apps はマイクロサービス向けのサーバーレスオーケストレーション、ACI は単一コンテナ実行"
-  },
-  {
-    "q": "Azure Virtual Network のサービスエンドポイントがサポートする主なサービスはどれですか？（複数選択）",
-    "choices": ["Azure Storage", "Azure SQL Database", "Azure Cosmos DB", "Azure Key Vault"],
-    "correct": ["Azure Storage", "Azure SQL Database", "Azure Cosmos DB", "Azure Key Vault"]
-  },
-  {
-    "q": "Azure ExpressRoute の利点として正しいものはどれですか？（複数選択）",
-    "choices": ["プライベート接続", "高い信頼性と低遅延", "パブリックインターネットを経由しない", "コストが安い"],
-    "correct": ["プライベート接続", "高い信頼性と低遅延", "パブリックインターネットを経由しない"]
-  },
-  {
-    "q": "Network Security Group (NSG) と Application Security Group (ASG) の組み合わせの利点は何ですか？",
-    "choices": ["ルールをVM単位ではなくグループ単位で管理可能", "コスト削減", "トラフィック増加", "パブリックアクセス必須"],
-    "correct": "ルールをVM単位ではなくグループ単位で管理可能"
-  },
-  {
-    "q": "Azure Firewall Manager の主な機能はどれですか？",
-    "choices": ["複数のAzure Firewallを集中管理し、ポリシーを一元適用", "単一ファイアウォール管理のみ", "DDoS保護のみ", "DNS管理"],
-    "correct": "複数のAzure Firewallを集中管理し、ポリシーを一元適用"
-  },
-  {
-    "q": "Activity Log の保持期間をデフォルトから延長するにはどうしますか？",
-    "choices": ["Log Analytics ワークスペースまたはストレージアカウントにエクスポート", "Azure Policy で変更", "ポータルで直接変更", "不可能"],
-    "correct": "Log Analytics ワークスペースまたはストレージアカウントにエクスポート"
-  },
-  {
-    "q": "Azure Backup で VM のバックアップ時にアプリケーション整合性を確保するには何を使用しますか？",
-    "choices": ["VSS (Volume Shadow Copy Service)", "ファイルシステム整合性のみ", "クラッシュ整合性のみ", "手動停止が必要"],
-    "correct": "VSS (Volume Shadow Copy Service)"
-  },
-  {
-    "q": "Azure Monitor のメトリックアラートとログアラートの違いは何ですか？",
-    "choices": ["メトリックはリアルタイム、ログはKQLクエリで遅延あり", "ログアラートがリアルタイム", "違いはない", "メトリックは高コスト"],
-    "correct": "メトリックはリアルタイム、ログはKQLクエリで遅延あり"
-  },
-  {
-    "q": "Azure Automation で使用できる機能として正しいものはどれですか？（複数選択）",
-    "choices": ["Runbookによる自動化", "Update Management", "Change Tracking", "Desired State Configuration"],
-    "correct": ["Runbookによる自動化", "Update Management", "Change Tracking", "Desired State Configuration"]
-  },
-  {
-    "q": "Privileged Identity Management (PIM) で「適格な割り当て」とは何ですか？",
-    "choices": ["必要なときだけ一時的にロールをアクティブ化", "永続的な管理者権限", "読み取り専用", "自動承認"],
-    "correct": "必要なときだけ一時的にロールをアクティブ化"
-  },
-  {
-    "q": "Azure Resource Graph の主な用途は何ですか？",
-    "choices": ["大規模環境でのリソース検索とクエリ実行", "コスト分析のみ", "監視ダッシュボード", "バックアップ管理"],
-    "correct": "大規模環境でのリソース検索とクエリ実行"
-  },
-  {
-    "q": "Azure Storage アカウントで変更フィードを有効にする目的は何ですか？",
-    "choices": ["Blobの変更をリアルタイムで追跡（Change Data Capture用途）", "自動バックアップ", "アクセスログ記録", "暗号化強化"],
-    "correct": "Blobの変更をリアルタイムで追跡（Change Data Capture用途）"
-  },
-  {
-    "q": "Azure VM の予約インスタンスを購入すると最大で何％の割引が受けられますか？",
-    "choices": ["最大72％", "最大50％", "最大30％", "割引なし"],
-    "correct": "最大72％"
-  },
-  {
-    "q": "Azure Traffic Manager のルーティング方法で「Performance」が使用する基準は何ですか？",
-    "choices": ["ユーザーに最も近いエンドポイント（最低遅延）", "優先順位", "重み付け", "地理的地域"],
-    "correct": "ユーザーに最も近いエンドポイント（最低遅延）"
-  },
-  {
-    "q": "Azure Resource Manager (ARM) テンプレートを使って、リソース グループ RG1 に仮想マシンをプロビジョニングするには、どの PowerShell コマンドレットを使うべきですか？",
-    "choices": [
-      "New-AzManagementGroupDeployment",
-      "New-AzResourceGroupDeployment",
-      "New-AzSubscriptionDeployment",
-      "New-AzVM"
-    ],
-    "correct": "New-AzResourceGroupDeployment"
-  },
-  {
-    "q": "Azure BLOB ストレージにある deploy.json テンプレートを New-AzDeployment コマンドレットでデプロイする場合、どのパラメーターを使ってテンプレートを参照しますか？",
-    "choices": [
-      "Tag",
-      "Templatefile",
-      "TemplateSpecId",
-      "TemplateUri"
-    ],
-    "correct": "TemplateUri"
-  },
-  {
-    "q": "リソース グループ app-grp1 内のリソースが作成された日時を確認するには、Azure portal のどのブレードを使用しますか？",
-    "choices": [
-      "デプロイ",
-      "診断設定",
-      "デプロイ スタック",
-      "Policy"
-    ],
-    "correct": "デプロイ"
-  },
-  {
-    "q": "VM1 (Windows Server) を Subnet1 と Subnet2 の両方に接続させるには、まず何を行う必要がありますか？",
-    "choices": [
-      "Azure portal から、ネットワーク インターフェイスを追加します。",
-      "Azure portal から、IP グループを作成します。",
-      "Azure portal から、既存のネットワーク インターフェイスの IP 構成を変更します。",
-      "Windows Server にサインインし、ネットワーク ブリッジを作成します。"
-    ],
-    "correct": "Azure portal から、ネットワーク インターフェイスを追加します。"
-  },
-  {
-    "q": "米国東部リージョンの可用性セットに、2 つの障害ドメインと 10 個の更新ドメインを使って 18 台の仮想マシンをデプロイしました。計画的ハードウェア メンテナンス時、同時に使用不可になる最大の仮想マシン数はいくつですか？",
-    "choices": [
-      "2",
-      "8",
-      "9",
-      "18"
-    ],
-    "correct": "2"
-  },
-  {
-    "q": "Azure 仮想マシンで Azure Spot インスタンスを使用する場合、インスタンスが除去される原因となる可能性がある要因はどれですか？（複数選択）",
-    "choices": [
-      "インスタンスの平均 CPU 使用率",
-      "Azure 容量のニーズ",
-      "インスタンスの現在の価格",
-      "時刻"
-    ],
-    "correct": [
-      "Azure 容量のニーズ",
-      "インスタンスの現在の価格"
-    ]
-  },
-  {
-    "q": "Azure Storage アカウント vmstorageaccount1 で、Azure コンテナー container1 の永続ストレージを構成するには、どの種類のストレージを作成する必要がありますか？",
-    "choices": [
-      "BLOB コンテナー",
-      "ファイル共有",
-      "キュー",
-      "テーブル"
-    ],
-    "correct": "ファイル共有"
-  },
-  {
-    "q": "Microsoft Entra テナントにリンクされた Azure サブスクリプションで、Kubernetes API サーバーへのアクセスを制限するには、どの 2 つの方法を使用しますか？（複数選択）",
-    "choices": [
-      "API サーバーの許可済み IP 範囲",
-      "パブリック クラスター",
-      "プライベート クラスター",
-      "Azure タグ"
-    ],
-    "correct": [
-      "API サーバーの許可済み IP 範囲",
-      "プライベート クラスター"
-    ]
-  },
-  {
-    "q": "Azure サブスクリプションにある Docker コンテナー container1 を、Azure Web アプリ WebApp1 で使用できるようにするには、WebApp1 のどの設定を構成する必要がありますか？",
-    "choices": [
-      "継続的配置",
-      "料金プラン",
-      "公開",
-      "ランタイム スタック"
-    ],
-    "correct": "ランタイム スタック"
-  },
-  {
-    "q": "Azure サブスクリプションにある Azure コンテナー アプリ cont1 に、Azure Service Bus のメッセージに基づいてレプリカを作成するスケーリング ルールを追加するには、どのスケール トリガーを使用しますか？",
-    "choices": [
-      "CPU 使用率",
-      "イベント ドリブン",
-      "HTTP トラフィック",
-      "メモリ使用量"
-    ],
-    "correct": "イベント ドリブン"
-  },
-  {
-    "q": "Azure サブスクリプションにある App Service Web アプリ App1 の診断ログを、警告以上のすべてのログが格納されるように構成するには、どの種類の診断ログと重大度を有効にする必要がありますか？（複数選択）",
-    "choices": [
-      "アプリケーション ログ (BLOB)",
-      "アプリケーション ログ (ファイルシステム)",
-      "詳細なエラー メッセージ",
-      "Web サーバーのログ",
-      "警告"
-    ],
-    "correct": [
-      "アプリケーション ログ (BLOB)",
-      "詳細なエラー メッセージ",
-      "警告"
-    ]
-  },
-  {
-    "q": "Windows で実行される Azure App Service Web アプリを作成する場合で、5 インスタンスへのスケーリング、45 GB のストレージ、カスタム ドメイン名が必要で、コストを最小化したいとき、どの App Service プランを使用すべきですか？",
-    "choices": [
-      "Basic",
-      "Free",
-      "Premium",
-      "Standard"
-    ],
-    "correct": "Standard"
-  },
-  {
-    "q": "Azure サブスクリプションで、Linux ベースの Docker コンテナーに Web アプリをデプロイする場合、次の要件を満たすソリューションとしてどれを推奨しますか？\n- カスタム ドメイン名をサポート\n- 需要に応じた自動スケールアウト\n- 管理作業を最小化\n- コストを最小化",
-    "choices": [
-      "Azure App Service",
-      "Azure Container Instances",
-      "Azure Kubernetes Service (AKS)",
-      "Azure 仮想マシンのスケールセット"
-    ],
-    "correct": "Azure App Service"
-  },
-  {
-    "q": "Azure サブスクリプションで、VM501 が VM20 と通信できない問題の原因として、ネットワーク セキュリティ グループ (NSG) を疑っています。管理作業を最小限に抑えつつ、NSG が通信をブロックしているかどうかを特定するには、どの機能を使用すべきですか？",
-    "choices": [
-      "診断ログ",
-      "IP フロー検証",
-      "NSG フロー ログ",
-      "パケット キャプチャ"
-    ],
-    "correct": "IP フロー検証"
-  },
-  {
-    "q": "Log Analytics ワークスペースで作成した Azure Monitor ログ クエリの結果を共有ダッシュボードにグラフとしてピン留めする場合、表示できる最大期間は何日ですか？",
-    "choices": [
-      "14",
-      "30",
-      "90",
-      "180"
-    ],
-    "correct": "90"
-  },
-  {
-    "q": "メトリック値とアクティビティ ログイベントに基づいて Azure アラートを作成する場合、次の要件を満たすにはどの 2 つのリソースを作成する必要がありますか？（複数選択）\n- アラート通知の送信回数に制限を設定\n- アラート発生時に Azure 関数を呼び出す\n- アラートの重大度を警告に設定",
-    "choices": [
-      "アクション グループ",
-      "アラート ルール",
-      "通知",
-      "セキュリティで保護された Webhook"
-    ],
-    "correct": [
-      "アクション グループ",
-      "アラート ルール"
-    ]
-  },
-  {
-    "q": "Linux 上で実行される Azure 仮想マシンにおいて、JSON 形式でログを出力するカスタム アプリケーションのログを Log Analytics ワークスペースで収集するには、どのソリューションを使用すべきですか？",
-    "choices": [
-      "Azure VMAccess 拡張機能",
-      "カスタム スクリプト拡張機能バージョン 2",
-      "Linux 用 DSC 拡張機能",
-      "Linux 用の Azure Monitor エージェント"
-    ],
-    "correct": "Linux 用の Azure Monitor エージェント"
-  },
-  {
-    "q": "Azure にデプロイされた 100 台の仮想マシンに対して構成された Azure Monitor の CPU とメモリ使用率アラートで、50 個のアラートが [終了] 状態になっている理由は何ですか？",
-    "choices": [
-      "管理者がアラートの状態を手動で変更しました。",
-      "アラートは 60 日より前のものです。",
-      "アラート ルールに、アラートの条件を修復するアクション グループが含まれています。",
-      "アラートの原因となった条件が存在しなくなりました。"
-    ],
-    "correct": "アラートの原因となった条件が存在しなくなりました。"
-  },
-  {
-    "q": "複数の Azure 仮想マシンが Azure Recovery Services コンテナーで、既定のバックアップ ポリシーを使用して構成されている場合、仮想マシン バックアップの保有期間は何日ですか？",
-    "choices": [
-      "7 日",
-      "14 日",
-      "30 日間",
-      "90 日間"
-    ],
-    "correct": "30 日間"
-  },
-  {
-    "q": "Azure サブスクリプションで、VM1 と VM2 が Vault1（Recovery Services コンテナー）にバックアップされている場合、Vault1 を削除する前に実行する必要がある 3 つのアクションはどれですか？（複数選択）",
-    "choices": [
-      "VM1 と VM2 を削除します。",
-      "論理的な削除機能を無効にし、すべてのデータを削除します。",
-      "Vault1 で読み取りロックを有効にします。",
-      "論理的な削除状態のすべての項目を完全に削除します。",
-      "VM1 と VM2 のバックアップを停止します。"
-    ],
-    "correct": [
-      "論理的な削除機能を無効にし、すべてのデータを削除します。",
-      "論理的な削除状態のすべての項目を完全に削除します。",
-      "VM1 と VM2 のバックアップを停止します。"
-    ]
-  },
-  {
-    "q": "Azure サブスクリプションで、VNet1 と VNet2 の両方のリソースが互いにシームレスに通信できるようにするには、Azure portal でどの設定を構成する必要がありますか？",
-    "choices": [
-      "接続されているデバイス",
-      "ファイアウォール",
-      "ピアリング",
-      "サービス エンドポイント"
-    ],
-    "correct": "ピアリング"
-  },
-  {
-    "q": "Azure サブスクリプションで、ネットワーク セキュリティ グループ (NSG) に関連付けることができる 2 つのリソースはどれですか？（複数選択）",
-    "choices": [
-      "仮想ネットワーク",
-      "仮想マシン",
-      "ネットワーク インターフェイス",
-      "サブネット"
-    ],
-    "correct": [
-      "ネットワーク インターフェイス",
-      "サブネット"
-    ]
-  },
-  {
-    "q": "NSG1 に割り当てられた VM1 へのポート 80 のインターネットアクセスを許可するには、どの操作を行う必要がありますか？\nNSG1 の送信セキュリティ規則:\n- Rule1: 優先度 900, ブロック, ポート 80\n- Rule2: 優先度 1000, 許可, ポート 80",
-    "choices": [
-      "Rule2 のアクションを変更します。",
-      "Rule1 の名前を変更します。",
-      "Rule2 の優先度を変更します。",
-      "Rule2 内でソースを変更します。"
-    ],
-    "correct": "Rule2 の優先度を変更します。"
-  },
-  {
-    "q": "Windows Server を実行する複数の Azure 仮想マシンに、RDP ポートをインターネットに公開せずに接続するには、どの Azure サービスを使用すべきですか？",
-    "choices": [
-      "Azure Bastion",
-      "Azure Front Door",
-      "Azure Network Watcher",
-      "Azure Virtual Desktop"
-    ],
-    "correct": "Azure Bastion"
-  },
-  {
-    "q": "次の Azure 仮想マシンのうち、ポート 80 でインターネット経由のアクセスが可能なのはどれですか？\nNSG の設定:\n- NSG1: ポート 80 許可\n- NSG2: ポート 80 許可\n- NSG3: ポート 80 ブロック\nVM とサブネットの NSG 関連付け:\n- VM1: Subnet1 (NSG1)、NIC1 (NSG2)\n- VM2: Subnet1 (NSG1)、NIC2 (NSG3)\n- VM3: Subnet3 (NSGなし)、NIC3 (NSG3)\n- VM4: Subnet2 (NSG3)、NICなし",
-    "choices": [
-      "VM1",
-      "VM2",
-      "VM3",
-      "VM4"
-    ],
-    "correct": "VM1"
-  },
-  {
-    "q": "Azure サブスクリプションで、リソース グループ RG1 に対して、リモート デスクトップ (RDP) と HTTP トラフィックを許可する NSG1（ネットワーク セキュリティ グループ）を作成・構成するには、どの 2 つの PowerShell コマンドレットを使用する必要がありますか？（複数選択）",
-    "choices": [
-      "Add-AzLoadBalancerFrontendIpConfig",
-      "Add-AzNetworkInterfaceTapConfig",
-      "New-AzNetworkSecurityGroup",
-      "New-AzNetworkSecurityRuleConfig"
-    ],
-    "correct": [
-      "New-AzNetworkSecurityGroup",
-      "New-AzNetworkSecurityRuleConfig"
-    ]
-  },
-  {
-    "q": "Azure サブスクリプションで、contoso.com DNS ゾーンに新しいサブドメイン test.contoso.com を追加し、別の DNS サーバーに委任する場合、どのように設定すべきですか？",
-    "choices": [
-      "test.contoso.com の A レコードを追加します。",
-      "contoso.com ゾーンに test という名前の NS レコード セットを追加します。",
-      "test.contoso.com の SOA レコードを作成します。",
-      "contoso.com の A レコードを変更します。"
-    ],
-    "correct": "contoso.com ゾーンに test という名前の NS レコード セットを追加します。"
-  },
-  {
-    "q": "VNet1 上の仮想マシンが contoso.com プライベート DNS ゾーンに自動的に登録されるようにするには、どの操作を行う必要がありますか？",
-    "choices": [
-      "contoso.com に仮想ネットワーク リンクを追加します。",
-      "VNet1 に Azure DNS Private Resolver を追加します。",
-      "カスタム DNS サーバーを使用するように各仮想マシンを構成します。",
-      "カスタム DNS サーバーを使用するように VNet1 を構成します。"
-    ],
-    "correct": "contoso.com に仮想ネットワーク リンクを追加します。"
-  },
-  {
-    "q": "Azure Load Balancer を使用して Web アプリケーションをホストしている VM へのトラフィックを均一に分散するには、どの設定を変更する必要がありますか？",
-    "choices": [
-      "プールにさらに VM を追加します。",
-      "負荷分散規則の設定を調整します。",
-      "セッション永続化を無効にします。",
-      "セッション永続化 (ソース IP アフィニティ) を有効にします。"
-    ],
-    "correct": "セッション永続化を無効にします。"
-  },
-  {
-    "q": "Azure Standard Load Balancer を使用している環境で、バックエンド プール内の VM に断続的な接続問題が発生している場合、トラブルシューティングと解決のために実行すべき 3 つのアクションはどれですか？（複数選択）",
-    "choices": [
-      "正常性プローブの構成を確認します。",
-      "VM が構成されたポートに応答することを確認します。",
-      "タイムアウトの設定を増やします。",
-      "セッション永続化の設定を変更します。",
-      "VM を再起動します。",
-      "NSG 規則で受信トラフィックが許可されていることを確認します。"
-    ],
-    "correct": [
-      "正常性プローブの構成を確認します。",
-      "VM が構成されたポートに応答することを確認します。",
-      "NSG 規則で受信トラフィックが許可されていることを確認します。"
-    ]
-  },
-  {
-    "q": "Azure サブスクリプションで、storage1 ストレージ アカウントへのアクセスを、Shared Access Signature (SAS) を使用してサードパーティアプリに今後 30 日間許可するには、どの SAS を使用すべきですか？",
-    "choices": [
-      "サービス SAS",
-      "保存されているアクセス ポリシー",
-      "アカウント SAS",
-      "特定目的のためのSAS"
-    ],
-    "correct": "サービス SAS"
-  },
-  {
-    "q": "App1 アプリが storage1 ストレージ アカウントから 12 時間データを読み取れるようにし、トークンの侵害時もアクセス制御を最小限に管理するには、どの方法で SAS トークンを生成すべきですか？",
-    "choices": [
-      "アカウント SAS",
-      "Azure Storage Explorer",
-      "az storage container generate-sas コマンド",
-      "New-AzStorageAccountSASToken コマンドレット"
-    ],
-    "correct": "New-AzStorageAccountSASToken コマンドレット"
-  },
-  {
-    "q": "Azure Data Lake Storage Gen2 機能をサポートする Azure ストレージ アカウントを作成する場合、使用できるストレージ アカウントの種類はどれですか？（複数選択）",
-    "choices": [
-      "Premium ブロック BLOB",
-      "Premium ファイル共有",
-      "Standard 汎用 v2",
-      "Premium ページ BLOB"
-    ],
-    "correct": [
-      "Premium ブロック BLOB",
-      "Standard 汎用 v2"
-    ]
-  },
-  {
-    "q": "少なくとも 2 つの可用性ゾーンにデータを格納し、高可用性を提供する Azure ストレージ アカウントを作成するには、どの種類のストレージ冗長性を使用すべきですか？",
-    "choices": [
-      "geo 冗長ストレージ (GRS)",
-      "ローカル冗長ストレージ (LRS)",
-      "読み取りアクセス geo 冗長ストレージ (RA-GRS)",
-      "ゾーン冗長ストレージ (ZRS)"
-    ],
-    "correct": "ゾーン冗長ストレージ (ZRS)"
-  },
-  {
-    "q": "\\server1\\images というオンプレミス共有フォルダーのすべてのコンテンツを、Azure Storage アカウント corpimages に移行するには、使用できるコマンドはどれですか？（複数選択）",
-    "choices": [
-      "Azcopy copy \\\\server1\\images https://corpimages.blob.core.windows.net/public -recursive",
-      "Azcopy sync \\\\server1\\images https://corpimages.blob.core.windows.net/public -recursive",
-      "Get-ChildItem -Path \\\\server1\\images -Recurse | Set-AzStorageBlobContent -Container \"corpimages\"",
-      "Set-AzStorageBlobContent -Container \"ContosoUpload\" -File \"\\\\server1\\images\" -Blob \"corporateimages \""
-    ],
-    "correct": [
-      "Azcopy copy \\\\server1\\images https://corpimages.blob.core.windows.net/public -recursive",
-      "Azcopy sync \\\\server1\\images https://corpimages.blob.core.windows.net/public -recursive"
-    ]
-  },
-  {
-    "q": "Azure ストレージ アカウント storage1 が POSIX 準拠のアクセス制御リスト (ACL) をサポートするように作成するには、どのオプションを構成する必要がありますか？",
-    "choices": [
-      "アクセス層",
-      "階層型名前空間",
-      "SFTP",
-      "バージョン レベルの不変サポート"
-    ],
-    "correct": "階層型名前空間"
-  },
-  {
-    "q": "storage1 の share1 ファイル共有が大きなファイルをサポートし、最大 100 TiB を格納できるようにするには、どの PowerShell コマンドを実行する必要がありますか？（複数選択）",
-    "choices": [
-      "New-AzRmStorageShare -ResourceGroupName RG1 -Name -StorageAccountName storage1 -Name share1 -QuotaGiB 100GB",
-      "Set-AzStorageAccount -ResourceGroupName RG1 -Name storage1 -EnableLargeFileShare",
-      "Set-AzStorageAccount -ResourceGroupName RG1 -Name storage1 -Type \"Standard_RAGRS\"",
-      "Update-AzRmStorageShare -ResourceGroupName RG1 -Name -StorageAccountName storage1 -Name share1 -QuotaGiB 102400"
-    ],
-    "correct": [
-      "Set-AzStorageAccount -ResourceGroupName RG1 -Name storage1 -EnableLargeFileShare",
-      "Update-AzRmStorageShare -ResourceGroupName RG1 -Name -StorageAccountName storage1 -Name share1 -QuotaGiB 102400"
-    ]
-  },
-  {
-    "q": "Azure Storage アカウントで、BLOB が 30 日間アクセスされていない場合にクール ストレージに移動するライフサイクル管理ルールを作成する前に、最初に何を実行する必要がありますか？",
-    "choices": [
-      "アクセス追跡を有効にします。",
-      "BLOB のバージョン管理を有効にします。",
-      "BLOB インベントリを更新します。",
-      "ストレージ アカウント キーをローテーションします。"
-    ],
-    "correct": "アクセス追跡を有効にします。"
-  },
-  {
-    "q": "セキュリティで保護された場所から、SMB プロトコルを使用して Azure ファイル共有にアクセスできるようにするには、どの送信ポートを許可する必要がありますか？",
-    "choices": [
-      "80",
-      "443",
-      "445",
-      "5671"
-    ],
-    "correct": "445"
-  },
-  {
-    "q": "Microsoft Entra ID の属性に基づいてユーザーにライセンスを割り当て、管理作業を最小限にするには、どの 2 つのアクションを実行する必要がありますか？（複数選択）",
-    "choices": [
-      "動的セキュリティ グループにライセンスを割り当てます。",
-      "各ユーザーにライセンスを割り当てます。",
-      "自動割り当てポリシーを作成します。",
-      "動的セキュリティ グループを作成します。",
-      "管理単位を作成します。"
-    ],
-    "correct": [
-      "動的セキュリティ グループを作成します。",
-      "動的セキュリティ グループにライセンスを割り当てます。"
-    ]
-  },
-  {
-    "q": "contoso.com の Microsoft Entra テナントで、ゲスト招待元、ユーザー管理者、全体管理者のロール メンバーのみがゲストユーザーを招待できるようにするには、何を構成する必要がありますか？",
-    "choices": [
-      "アクセス レビュー",
-      "条件付きアクセス",
-      "クロステナント アクセス設定",
-      "外部コラボレーションの設定"
-    ],
-    "correct": "外部コラボレーションの設定"
-  },
-  {
-    "q": "オンプレミスの Active Directory と Microsoft Entra テナントに複数ユーザーがいる環境で、セルフサービス パスワード リセット (SSPR) のパスワード ライトバック機能を構成し、コストを最小限にするには、どの Microsoft Entra ID エディションを使用すべきですか？",
-    "choices": [
-      "Microsoft Entra ID Free（無料）",
-      "Microsoft Entra ID P1",
-      "Microsoft Entra ID P2"
-    ],
-    "correct": "Microsoft Entra ID P1"
-  },
-  {
-    "q": "Group1 に Microsoft 365 ライセンスを割り当てた場合、使用されるライセンスはいくつですか？\n\n条件:\n- Group1 のメンバー: User1、User2、User3\n- メンバーシップの種類: 割り当て済み\n- User3 はゲスト\n- User4 は所有者",
-    "choices": [
-      "0",
-      "1",
-      "3",
-      "4"
-    ],
-    "correct": "3"
-  },
-  {
-    "q": "User1 が外部ユーザーを Microsoft Entra テナントに招待できるようにするには、最小特権の原則に従い、どのロールを割り当てる必要がありますか？",
-    "choices": [
-      "グローバル管理者",
-      "グループ管理者",
-      "ゲスト招待元",
-      "セキュリティ管理者"
-    ],
-    "correct": "ゲスト招待元"
-  },
-  {
-    "q": "提示されたカスタム ロールが割り当てられたユーザーは、どの 2 つのアクションを実行できますか？（複数選択）\n\nカスタム ロールの内容:\n- Actions: Microsoft.Compute/*/read, Microsoft.Compute/snapshots/write, Microsoft.Compute/snapshots/read\n- NotActions: Microsoft.Compute/snapshots/delete",
-    "choices": [
-      "スナップショットを作成して削除する。",
-      "スナップショットを作成して読み取る。",
-      "仮想マシンを作成する。",
-      "仮想マシンのすべての設定を読み取る。"
-    ],
-    "correct": [
-      "スナップショットを作成して読み取る。",
-      "仮想マシンのすべての設定を読み取る。"
-    ]
-  },
-  {
-    "q": "Azure サブスクリプションにおいて、リソース グループ RG1 にカスタム ロールを割り当てるスクリプトがあります。現在のスクリプトは次の通りです。\n\n$rg = \"RG1\"\n$RoleName = \"111-222-333-444-555\"\n$Role = Get-AzRoleDefinition -Name $RoleName\nNew-AzRoleAssignment -SignInName user1@contoso.com -RoleDefinitionName $Role.Name -ResourceGroupName $rg\n\nUser1 は RG1 にアクセスできません。スクリプトが失敗しないように修正するには、どの部分を変更する必要がありますか？",
-    "choices": [
-      "$Role = Add-AzRoleDefinition -Name $RoleName",
-      "$Role = Get-AzRoleAssignment -Name $RoleName",
-      "$Role = Set-AzRoleAssignment -Name $RoleName",
-      "$RoleName = ”CustomRole1”"
-    ],
-    "correct": "$RoleName = ”CustomRole1”"
-  },
-  {
-    "q": "複数のストレージ アカウントを含む Azure サブスクリプションがあります。ユーザーに次の操作を行う権限を付与する必要があります。\n\n- ストレージ アカウント内のコンテナーを管理する\n- ストレージ アカウントのアクセス キーを表示する\n\n最小権限の原則に従うには、どのロールを割り当てるべきですか？",
-    "choices": [
-      "所有者",
-      "閲覧者",
-      "ストレージ アカウント共同作成者",
-      "ストレージ BLOB データ共同作成者"
-    ],
-    "correct": "ストレージ アカウント共同作成者"
-  },
-  {
-    "q": "あなたは、Azure 環境内のユーザー ID とガバナンスの管理を担当しています。User1 という名前の新しいユーザーが、ユーザー アカウントとグループを作成および管理し、サポート チケットを管理し、サービスの正常性を監視できることを確認する必要があります。最小権限の原則に従う場合、User1 に割り当てるべき Microsoft Entra ロールはどれですか？",
-    "choices": [
-      "ユーザー管理者",
-      "課金管理者",
-      "グローバル管理者",
-      "サービス管理者"
-
-    ],
-    "correct": "ユーザー管理者"
-  },
-  {
-    "q": "複数の管理グループと Azure サブスクリプションがあります。リソースが誤って削除されないようにする必要があります。削除ロックを適用できる 3 つのリソースの種類はどれですか?",
-    "choices": [
-      "管理グループ",
-      "リソース グループ",
-      "ストレージ アカウント データ",
-      "サブスクリプション",
-      "仮想マシン"
-    ],
-    "correct": [
-      "リソース グループ",
-      "サブスクリプション",
-      "仮想マシン"
-    ]
-  },
-  {
-    "q": "10 台の仮想マシンを含む Azure サブスクリプションがあります。User1 という名前のユーザーが、Azure portal を使用してすべての仮想マシンにタグを付けられるようにする必要があります。解答では、最小限の特権の原則に従う必要があります。どうすればよいでしょうか?",
-    "choices": [
-      "Azure portal から、Microsoft.Compute 仮想マシン/*/書き込みアクセス許可を持つカスタム ロールを作成します。",
-      "Azure portal から、仮想マシンのアクセス制御 (IAM) 設定を変更します。",
-      "Azure portal から、Azure サブスクリプションのポリシー設定を変更します。",
-      "コマンド ラインから、az role assignment create コマンドを実行します。"
-    ],
-    "correct": "Azure portal から、Microsoft.Compute 仮想マシン/*/書き込みアクセス許可を持つカスタム ロールを作成します。"
-  }
+   {
+      "q":"Azure サブスクリプションでリソースを論理的にグループ化するために使用するものは何ですか？",
+      "choices":[
+         "Resource Group",
+         "Management Group",
+         "Subscription",
+         "Tag"
+      ],
+      "correct":"Resource Group"
+   },
+   {
+      "q":"Azure Policy を使用して、特定の地域へのリソース作成を禁止するにはどうしますか？",
+      "choices":[
+         "Deny 効果のポリシー割り当て",
+         "Audit 効果のポリシー割り当て",
+         "Append 効果のポリシー割り当て",
+         "DeployIfNotExists 効果のポリシー割り当て"
+      ],
+      "correct":"Deny 効果のポリシー割り当て"
+   },
+   {
+      "q":"Azure RBAC で組み込みロールとして、仮想マシンの読み取り専用アクセスを提供するのはどれですか？",
+      "choices":[
+         "Reader",
+         "Contributor",
+         "Owner",
+         "Virtual Machine Contributor"
+      ],
+      "correct":"Reader"
+   },
+   {
+      "q":"管理グループの階層でポリシーを適用する利点はどれですか？（複数選択）",
+      "choices":[
+         "複数のサブスクリプションに一貫したガバナンスを適用できる",
+         "コスト管理が容易になる",
+         "リソースの移動が制限される",
+         "アクセス制御を一元管理できる"
+      ],
+      "correct":[
+         "複数のサブスクリプションに一貫したガバナンスを適用できる",
+         "アクセス制御を一元管理できる"
+      ]
+   },
+   {
+      "q":"Azure Storage アカウントの冗長オプションで、ローカル冗長ストレージ (LRS) は何回のコピーを同一データセンター内に保持しますか？",
+      "choices":[
+         "3回",
+         "6回",
+         "9回",
+         "12回"
+      ],
+      "correct":"3回"
+   },
+   {
+      "q":"Blob Storage で Cool アクセス階層が適しているシナリオはどれですか？",
+      "choices":[
+         "頻繁にアクセスされないが、すぐに利用可能が必要なデータ",
+         "頻繁にアクセスされるデータ",
+         "アーカイブ目的の長期保存データ",
+         "リアルタイム分析データ"
+      ],
+      "correct":"頻繁にアクセスされないが、すぐに利用可能が必要なデータ"
+   },
+   {
+      "q":"共有アクセス署名 (SAS) の主な用途はどれですか？",
+      "choices":[
+         "ストレージ リソースへの制限付きアクセスを委任する",
+         "ストレージ アカウント キーの置き換え",
+         "永続的なアクセス権限の付与",
+         "Azure AD 認証の必須化"
+      ],
+      "correct":"ストレージ リソースへの制限付きアクセスを委任する"
+   },
+   {
+      "q":"Azure Files で SMB プロトコルを使用してオンプレミスからアクセスするには何が必要ですか？（複数選択）",
+      "choices":[
+         "VPN または ExpressRoute",
+         "Azure AD 認証",
+         "ストレージ アカウント キー",
+         "プライベート エンドポイント"
+      ],
+      "correct":[
+         "VPN または ExpressRoute",
+         "Azure AD 認証"
+      ]
+   },
+   {
+      "q":"仮想マシンを可用性ゾーンにデプロイする主な利点は何ですか？",
+      "choices":[
+         "データセンター レベルの障害に対する耐性",
+         "リージョン レベルの障害に対する耐性",
+         "コスト削減",
+         "パフォーマンス向上"
+      ],
+      "correct":"データセンター レベルの障害に対する耐性"
+   },
+   {
+      "q":"VM スケール セットで自動スケーリングを構成するために必要なものはどれですか？",
+      "choices":[
+         "メトリックベースのルール",
+         "固定インスタンス数",
+         "手動スケーリングのみ",
+         "可用性セット"
+      ],
+      "correct":"メトリックベースのルール"
+   },
+   {
+      "q":"Azure App Service でカスタム ドメインと TLS 証明書を構成するには何を使用しますか？",
+      "choices":[
+         "App Service 証明書または外部証明書のアップロード",
+         "Azure DNS のみ",
+         "Traffic Manager",
+         "Application Gateway"
+      ],
+      "correct":"App Service 証明書または外部証明書のアップロード"
+   },
+   {
+      "q":"Azure Container Instances (ACI) の利点はどれですか？（複数選択）",
+      "choices":[
+         "サーバーレス コンテナ実行",
+         "オーケストレーション不要",
+         "永続ストレージの自動管理",
+         "低コストの短時間実行"
+      ],
+      "correct":[
+         "サーバーレス コンテナ実行",
+         "オーケストレーション不要"
+      ]
+   },
+   {
+      "q":"仮想ネットワーク ピアリングの種類で、異なるリージョン間の接続を可能にするのはどれですか？",
+      "choices":[
+         "グローバル VNet ピアリング",
+         "リージョン VNet ピアリング",
+         "ExpressRoute ピアリング",
+         "サイト間 VPN"
+      ],
+      "correct":"グローバル VNet ピアリング"
+   },
+   {
+      "q":"ネットワーク セキュリティ グループ (NSG) のルール評価順序はどのように決まりますか？",
+      "choices":[
+         "優先度 (低い数字が先に評価)",
+         "ルール名",
+         "作成日時",
+         "関連付けられたサブネット"
+      ],
+      "correct":"優先度 (低い数字が先に評価)"
+   },
+   {
+      "q":"プライベート エンドポイントの主な用途は何ですか？",
+      "choices":[
+         "パブリック インターネットを経由せずに Azure サービスにアクセス",
+         "ロード バランシング",
+         "DNS 解決",
+         "トラフィック ルーティング"
+      ],
+      "correct":"パブリック インターネットを経由せずに Azure サービスにアクセス"
+   },
+   {
+      "q":"Azure Load Balancer の SKU で、ゾーン冗長をサポートするのはどれですか？",
+      "choices":[
+         "Standard",
+         "Basic",
+         "Gateway",
+         "Public のみ"
+      ],
+      "correct":"Standard"
+   },
+   {
+      "q":"Azure Monitor でアラートをトリガーするために使用するのはどれですか？",
+      "choices":[
+         "メトリックまたはログクエリ",
+         "リソース タグのみ",
+         "コスト超過のみ",
+         "手動トリガーのみ"
+      ],
+      "correct":"メトリックまたはログクエリ"
+   },
+   {
+      "q":"Azure Backup で Recovery Services コンテナーの冗長オプションとして GRS を選択する利点は何ですか？",
+      "choices":[
+         "リージョン障害時のデータ保護",
+         "コスト削減",
+         "パフォーマンス向上",
+         "即時復元"
+      ],
+      "correct":"リージョン障害時のデータ保護"
+   },
+   {
+      "q":"Network Watcher の機能として、接続の問題診断に使用するのはどれですか？",
+      "choices":[
+         "Connection Monitor",
+         "IP Flow Verify",
+         "Packet Capture",
+         "すべての以上"
+      ],
+      "correct":[
+         "Connection Monitor",
+         "IP Flow Verify",
+         "Packet Capture"
+      ]
+   },
+   {
+      "q":"Azure Site Recovery でオンプレミス VM を Azure にレプリケートする際に必要なものはどれですか？（複数選択）",
+      "choices":[
+         "Mobility サービス のインストール",
+         "Recovery Services コンテナー",
+         "ExpressRoute 接続",
+         "Azure AD Connect"
+      ],
+      "correct":[
+         "Mobility サービス のインストール",
+         "Recovery Services コンテナー"
+      ]
+   },
+   {
+      "q":"Microsoft Entra ID (旧 Azure AD) でユーザーのパスワード リセットを許可するには何を構成しますか？",
+      "choices":[
+         "Self-service password reset (SSPR)",
+         "Conditional Access ポリシー",
+         "MFA 必須",
+         "Privileged Identity Management"
+      ],
+      "correct":"Self-service password reset (SSPR)"
+   },
+   {
+      "q":"リソース ロックの種類として、削除を防止するのはどれですか？",
+      "choices":[
+         "Delete",
+         "ReadOnly",
+         "CanNotDelete",
+         "Append"
+      ],
+      "correct":"Delete"
+   },
+   {
+      "q":"Azure Storage でライフサイクル管理ポリシーを使用して Blob を自動的に Archive 階層に移行できますか？",
+      "choices":[
+         "はい",
+         "いいえ"
+      ],
+      "correct":"はい"
+   },
+   {
+      "q":"VM のディスク暗号化に使用する機能はどれですか？",
+      "choices":[
+         "Azure Disk Encryption",
+         "BitLocker",
+         "Storage Service Encryption",
+         "Transparent Data Encryption"
+      ],
+      "correct":"Azure Disk Encryption"
+   },
+   {
+      "q":"Azure Bastion の主な利点はどれですか？",
+      "choices":[
+         "VM への安全な RDP/SSH アクセス (パブリック IP 不要)",
+         "ロード バランシング",
+         "VPN ゲートウェイ",
+         "ファイアウォール"
+      ],
+      "correct":"VM への安全な RDP/SSH アクセス (パブリック IP 不要)"
+   },
+   {
+      "q":"Azure DNS でプライベート ゾーンを作成する目的は何ですか？",
+      "choices":[
+         "VNet 内からのみ解決可能なドメイン名",
+         "パブリック DNS 解決",
+         "グローバル ロード バランシング",
+         "トラフィック マネージャー統合"
+      ],
+      "correct":"VNet 内からのみ解決可能なドメイン名"
+   },
+   {
+      "q":"Azure AD Connect を使用してオンプレミス Active Directory を Microsoft Entra ID と同期させる主な方法はどれですか？",
+      "choices":[
+         "パスワード ハッシュ同期",
+         "パススルー認証",
+         "フェデレーション認証",
+         "すべての以上"
+      ],
+      "correct":[
+         "パスワード ハッシュ同期",
+         "パススルー認証",
+         "フェデレーション認証"
+      ]
+   },
+   {
+      "q":"Conditional Access ポリシーでリスクベースの条件を使用するには何が必要ですか？",
+      "choices":[
+         "Microsoft Entra ID P2 ライセンス",
+         "P1 ライセンス",
+         "無料ライセンス",
+         "Basic ライセンス"
+      ],
+      "correct":"Microsoft Entra ID P2 ライセンス"
+   },
+   {
+      "q":"Azure Blueprints の主な目的は何ですか？",
+      "choices":[
+         "リソースのテンプレート、ポリシー、ロール割り当てをパッケージ化して再利用可能にする",
+         "コスト管理のみ",
+         "監視ダッシュボード作成",
+         "バックアップ管理"
+      ],
+      "correct":"リソースのテンプレート、ポリシー、ロール割り当てをパッケージ化して再利用可能にする"
+   },
+   {
+      "q":"タグを使用してリソースをグループ化する主な利点はどれですか？（複数選択）",
+      "choices":[
+         "コスト配分と請求レポート",
+         "ポリシー適用",
+         "アクセス制御",
+         "自動スケーリング"
+      ],
+      "correct":[
+         "コスト配分と請求レポート",
+         "ポリシー適用",
+         "アクセス制御"
+      ]
+   },
+   {
+      "q":"Azure Storage アカウントでソフト削除を有効にすると何が可能です？",
+      "choices":[
+         "誤削除したBlobを一定期間内に復元",
+         "即時完全削除",
+         "自動アーカイブ",
+         "アクセス階層変更"
+      ],
+      "correct":"誤削除したBlobを一定期間内に復元"
+   },
+   {
+      "q":"Azure Data Lake Storage Gen2 で階層名前空間を有効にする利点は何ですか？",
+      "choices":[
+         "ディレクトリ操作とPOSIX準拠のアクセス制御リスト",
+         "コスト削減",
+         "パフォーマンス低下",
+         "パブリックアクセス必須"
+      ],
+      "correct":"ディレクトリ操作とPOSIX準拠のアクセス制御リスト"
+   },
+   {
+      "q":"ストレージ アカウントでファイアウォールと仮想ネットワーク ルールを構成するとどうなりますか？",
+      "choices":[
+         "指定したVNetやIPからのみアクセス可能",
+         "すべてのアクセスが拒否",
+         "Azureサービスは除外されない",
+         "キー認証が無効"
+      ],
+      "correct":"指定したVNetやIPからのみアクセス可能"
+   },
+   {
+      "q":"Azure Import/Export サービスはどのようなシナリオで使用されますか？",
+      "choices":[
+         "大量のデータを物理ディスクでAzureにインポート/エクスポート",
+         "リアルタイム転送",
+         "小容量データ転送",
+         "ストリーミングデータ"
+      ],
+      "correct":"大量のデータを物理ディスクでAzureにインポート/エクスポート"
+   },
+   {
+      "q":"可用性セットと可用性ゾーンの違いは何ですか？",
+      "choices":[
+         "可用性セットはラックレベル、可用性ゾーンはデータセンターレベル",
+         "可用性セットはデータセンターレベル",
+         "可用性ゾーンはコストが高いのみ",
+         "違いはない"
+      ],
+      "correct":"可用性セットはラックレベル、可用性ゾーンはデータセンターレベル"
+   },
+   {
+      "q":"Azure Dedicated Host の主な利点は何ですか？",
+      "choices":[
+         "物理サーバーの独占使用とライセンス持ち込み",
+         "コスト削減",
+         "サーバーレス",
+         "自動スケーリング"
+      ],
+      "correct":"物理サーバーの独占使用とライセンス持ち込み"
+   },
+   {
+      "q":"Azure Kubernetes Service (AKS) でノードプールを追加する目的は何ですか？",
+      "choices":[
+         "異なるVMサイズやOSを使用したスケーリング",
+         "コスト管理のみ",
+         "ストレージ追加",
+         "ネットワーク分離"
+      ],
+      "correct":"異なるVMサイズやOSを使用したスケーリング"
+   },
+   {
+      "q":"Azure Functions で Consumption プランと Premium プランの違いはどれですか？（複数選択）",
+      "choices":[
+         "PremiumはプリウォームインスタンスとVNet統合",
+         "Consumptionはコールドスタートが発生しやすい",
+         "Premiumは無制限実行時間",
+         "Consumptionは常時実行"
+      ],
+      "correct":[
+         "PremiumはプリウォームインスタンスとVNet統合",
+         "Consumptionはコールドスタートが発生しやすい"
+      ]
+   },
+   {
+      "q":"Application Gateway の WAF 機能で防止できる攻撃はどれですか？",
+      "choices":[
+         "SQLインジェクションやXSS",
+         "DDoSのみ",
+         "内部脅威",
+         "物理アクセス"
+      ],
+      "correct":"SQLインジェクションやXSS"
+   },
+   {
+      "q":"Azure Front Door の主な機能として正しいものはどれですか？（複数選択）",
+      "choices":[
+         "グローバルロードバランシング",
+         "WAF",
+         "URLパスベースルーティング",
+         "L4ロードバランシング"
+      ],
+      "correct":[
+         "グローバルロードバランシング",
+         "WAF",
+         "URLパスベースルーティング"
+      ]
+   },
+   {
+      "q":"ユーザー定義ルート (UDR) を使用してトラフィックを次ホップとして仮想アプライアンスに転送できますか？",
+      "choices":[
+         "はい",
+         "いいえ"
+      ],
+      "correct":"はい"
+   },
+   {
+      "q":"Azure Firewall の脅威インテリジェンス ベースのフィルタリングは何をしますか？",
+      "choices":[
+         "既知の悪意あるIPやドメインをブロック",
+         "アプリケーション層検査のみ",
+         "トラフィックログのみ",
+         "コスト管理"
+      ],
+      "correct":"既知の悪意あるIPやドメインをブロック"
+   },
+   {
+      "q":"Log Analytics ワークスペースにデータを送信できるAzureリソースはどれですか？（複数選択）",
+      "choices":[
+         "VM (エージェントインストール)",
+         "Storage アカウント (診断設定)",
+         "App Service",
+         "すべてのAzureリソース"
+      ],
+      "correct":[
+         "VM (エージェントインストール)",
+         "Storage アカウント (診断設定)",
+         "App Service"
+      ]
+   },
+   {
+      "q":"Azure Advisor の推奨カテゴリに含まれないものはどれですか？",
+      "choices":[
+         "信頼性",
+         "セキュリティ",
+         "パフォーマンス",
+         "高可用性",
+         "運用卓越性"
+      ],
+      "correct":"すべてのカテゴリに含まれる（信頼性、セキュリティ、パフォーマンス、コスト、運用卓越性）"
+   },
+   {
+      "q":"Azure Update Management を使用してVMのパッチ適用を自動化するには何が必要ですか？",
+      "choices":[
+         "Automation アカウントとLog Analytics ワークスペース",
+         "Azure Backup のみ",
+         "Site Recovery",
+         "Traffic Manager"
+      ],
+      "correct":"Automation アカウントとLog Analytics ワークスペース"
+   },
+   {
+      "q":"Azure Monitor Application Insights は主に何を監視しますか？",
+      "choices":[
+         "Webアプリケーションのパフォーマンスと使用状況",
+         "インフラメトリックのみ",
+         "ネットワークトラフィック",
+         "ストレージ容量"
+      ],
+      "correct":"Webアプリケーションのパフォーマンスと使用状況"
+   },
+   {
+      "q":"Microsoft Entra Domain Services の主な用途は何ですか？",
+      "choices":[
+         "リフトアンドシフトアプリケーション向けの管理されたActive Directoryドメイン",
+         "ID同期のみ",
+         "クラウド専用ID",
+         "ゲストユーザー管理"
+      ],
+      "correct":"リフトアンドシフトアプリケーション向けの管理されたActive Directoryドメイン"
+   },
+   {
+      "q":"Azure Resource Manager ロックの ReadOnly は何を防止しますか？",
+      "choices":[
+         "書き込み操作（変更・削除）",
+         "読み取りのみ",
+         "削除のみ",
+         "作成のみ"
+      ],
+      "correct":"書き込み操作（変更・削除）"
+   },
+   {
+      "q":"Azure Files のプレミアム階層でサポートされるのはどれですか？",
+      "choices":[
+         "ゾーン冗長ストレージ (ZRS)",
+         "LRSのみ",
+         "GRSのみ",
+         "Cool階層"
+      ],
+      "correct":"ゾーン冗長ストレージ (ZRS)"
+   },
+   {
+      "q":"Proximity Placement Group の目的は何ですか？",
+      "choices":[
+         "低遅延のためにVMを同じデータセンターに配置",
+         "高可用性",
+         "コスト削減",
+         "自動スケーリング"
+      ],
+      "correct":"低遅延のためにVMを同じデータセンターに配置"
+   },
+   {
+      "q":"Azure VPN Gateway のSKUで最高スループットを提供するのはどれですか？",
+      "choices":[
+         "VpnGw3AZ",
+         "Basic",
+         "Standard",
+         "ErGw1AZ"
+      ],
+      "correct":"VpnGw3AZ"
+   },
+   {
+      "q":"Azure DDoS Protection Standard の主な利点はどれですか？（複数選択）",
+      "choices":[
+         "アプリケーション層の保護",
+         "常に有効な緩和策",
+         "トラフィック分析とアラート",
+         "Basic プランでは保護されないボリューム攻撃"
+      ],
+      "correct":[
+         "アプリケーション層の保護",
+         "常に有効な緩和策",
+         "トラフィック分析とアラート"
+      ]
+   },
+   {
+      "q":"Service Endpoint と Private Endpoint の違いは何ですか？",
+      "choices":[
+         "Service Endpoint はパブリックIP経由、Private Endpoint はプライベートIP経由",
+         "Service Endpoint はプライベートIP経由、Private Endpoint はパブリックIP経由",
+         "どちらも同じ",
+         "Service Endpoint はコストがかかる"
+      ],
+      "correct":"Service Endpoint はパブリックIP経由、Private Endpoint はプライベートIP経由"
+   },
+   {
+      "q":"Azure Key Vault でシークレットをローテーションするために使用できる機能はどれですか？",
+      "choices":[
+         "管理されたIDとイベント駆動のローテーション",
+         "手動更新のみ",
+         "Azure Policy のみ",
+         "自動バックアップのみ"
+      ],
+      "correct":"管理されたIDとイベント駆動のローテーション"
+   },
+   {
+      "q":"Azure Policy の Initiative とは何ですか？",
+      "choices":[
+         "複数のポリシーをまとめたセット",
+         "単一のポリシー",
+         "ロール割り当て",
+         "ブループリント"
+      ],
+      "correct":"複数のポリシーをまとめたセット"
+   },
+   {
+      "q":"Azure Cost Management で予算アラートを設定できる対象はどれですか？",
+      "choices":[
+         "サブスクリプション、管理グループ、課金アカウント",
+         "リソースグループのみ",
+         "個別リソースのみ",
+         "タグのみ"
+      ],
+      "correct":"サブスクリプション、管理グループ、課金アカウント"
+   },
+   {
+      "q":"Azure Blob Storage のバージョニングを有効にすると何が可能になりますか？",
+      "choices":[
+         "過去のバージョンの復元や参照",
+         "自動削除",
+         "アクセス階層の自動変更",
+         "暗号化の強化"
+      ],
+      "correct":"過去のバージョンの復元や参照"
+   },
+   {
+      "q":"Azure NetApp Files の主な用途はどれですか？",
+      "choices":[
+         "エンタープライズ向けの高性能ファイル共有 (NFS/SMB)",
+         "オブジェクトストレージ",
+         "アーカイブ専用",
+         "一時ファイルのみ"
+      ],
+      "correct":"エンタープライズ向けの高性能ファイル共有 (NFS/SMB)"
+   },
+   {
+      "q":"Azure Disk Storage で Premium SSD v2 の特徴はどれですか？",
+      "choices":[
+         "IOPSとスループットを独立してスケーリング可能",
+         "固定サイズのみ",
+         "ゾーン冗長不可",
+         "低コスト優先"
+      ],
+      "correct":"IOPSとスループットを独立してスケーリング可能"
+   },
+   {
+      "q":"Azure VM でホストキャッシュの設定として「ReadOnly」が適しているディスクはどれですか？",
+      "choices":[
+         "読み取りが多いデータディスク",
+         "OSディスク",
+         "書き込みが多いデータベース",
+         "一時ディスク"
+      ],
+      "correct":"読み取りが多いデータディスク"
+   },
+   {
+      "q":"Azure Spot Virtual Machines の主な特徴はどれですか？",
+      "choices":[
+         "低コストだがAzureによりいつでも強制退去可能",
+         "高可用性保証",
+         "予約インスタンスより高い",
+         "常時稼働保証"
+      ],
+      "correct":"低コストだがAzureによりいつでも強制退去可能"
+   },
+   {
+      "q":"Azure App Service の Deployment Slots の主な用途はどれですか？（複数選択）",
+      "choices":[
+         "ステージング環境でのテスト",
+         "ゼロダウンタイムデプロイ",
+         "トラフィックのスワップ",
+         "コスト削減"
+      ],
+      "correct":[
+         "ステージング環境でのテスト",
+         "ゼロダウンタイムデプロイ",
+         "トラフィックのスワップ"
+      ]
+   },
+   {
+      "q":"Azure Container Apps と Azure Container Instances の違いはどれですか？",
+      "choices":[
+         "Container Apps はマイクロサービス向けのサーバーレスオーケストレーション、ACI は単一コンテナ実行",
+         "ACI のほうがスケーラブル",
+         "Container Apps はVNet統合不可",
+         "違いはない"
+      ],
+      "correct":"Container Apps はマイクロサービス向けのサーバーレスオーケストレーション、ACI は単一コンテナ実行"
+   },
+   {
+      "q":"Azure Virtual Network のサービスエンドポイントがサポートする主なサービスはどれですか？（複数選択）",
+      "choices":[
+         "Azure Storage",
+         "Azure SQL Database",
+         "Azure Cosmos DB",
+         "Azure Key Vault"
+      ],
+      "correct":[
+         "Azure Storage",
+         "Azure SQL Database",
+         "Azure Cosmos DB",
+         "Azure Key Vault"
+      ]
+   },
+   {
+      "q":"Azure ExpressRoute の利点として正しいものはどれですか？（複数選択）",
+      "choices":[
+         "プライベート接続",
+         "高い信頼性と低遅延",
+         "パブリックインターネットを経由しない",
+         "コストが安い"
+      ],
+      "correct":[
+         "プライベート接続",
+         "高い信頼性と低遅延",
+         "パブリックインターネットを経由しない"
+      ]
+   },
+   {
+      "q":"Network Security Group (NSG) と Application Security Group (ASG) の組み合わせの利点は何ですか？",
+      "choices":[
+         "ルールをVM単位ではなくグループ単位で管理可能",
+         "コスト削減",
+         "トラフィック増加",
+         "パブリックアクセス必須"
+      ],
+      "correct":"ルールをVM単位ではなくグループ単位で管理可能"
+   },
+   {
+      "q":"Azure Firewall Manager の主な機能はどれですか？",
+      "choices":[
+         "複数のAzure Firewallを集中管理し、ポリシーを一元適用",
+         "単一ファイアウォール管理のみ",
+         "DDoS保護のみ",
+         "DNS管理"
+      ],
+      "correct":"複数のAzure Firewallを集中管理し、ポリシーを一元適用"
+   },
+   {
+      "q":"Activity Log の保持期間をデフォルトから延長するにはどうしますか？",
+      "choices":[
+         "Log Analytics ワークスペースまたはストレージアカウントにエクスポート",
+         "Azure Policy で変更",
+         "ポータルで直接変更",
+         "不可能"
+      ],
+      "correct":"Log Analytics ワークスペースまたはストレージアカウントにエクスポート"
+   },
+   {
+      "q":"Azure Backup で VM のバックアップ時にアプリケーション整合性を確保するには何を使用しますか？",
+      "choices":[
+         "VSS (Volume Shadow Copy Service)",
+         "ファイルシステム整合性のみ",
+         "クラッシュ整合性のみ",
+         "手動停止が必要"
+      ],
+      "correct":"VSS (Volume Shadow Copy Service)"
+   },
+   {
+      "q":"Azure Monitor のメトリックアラートとログアラートの違いは何ですか？",
+      "choices":[
+         "メトリックはリアルタイム、ログはKQLクエリで遅延あり",
+         "ログアラートがリアルタイム",
+         "違いはない",
+         "メトリックは高コスト"
+      ],
+      "correct":"メトリックはリアルタイム、ログはKQLクエリで遅延あり"
+   },
+   {
+      "q":"Azure Automation で使用できる機能として正しいものはどれですか？（複数選択）",
+      "choices":[
+         "Runbookによる自動化",
+         "Update Management",
+         "Change Tracking",
+         "Desired State Configuration"
+      ],
+      "correct":[
+         "Runbookによる自動化",
+         "Update Management",
+         "Change Tracking",
+         "Desired State Configuration"
+      ]
+   },
+   {
+      "q":"Privileged Identity Management (PIM) で「適格な割り当て」とは何ですか？",
+      "choices":[
+         "必要なときだけ一時的にロールをアクティブ化",
+         "永続的な管理者権限",
+         "読み取り専用",
+         "自動承認"
+      ],
+      "correct":"必要なときだけ一時的にロールをアクティブ化"
+   },
+   {
+      "q":"Azure Resource Graph の主な用途は何ですか？",
+      "choices":[
+         "大規模環境でのリソース検索とクエリ実行",
+         "コスト分析のみ",
+         "監視ダッシュボード",
+         "バックアップ管理"
+      ],
+      "correct":"大規模環境でのリソース検索とクエリ実行"
+   },
+   {
+      "q":"Azure Storage アカウントで変更フィードを有効にする目的は何ですか？",
+      "choices":[
+         "Blobの変更をリアルタイムで追跡（Change Data Capture用途）",
+         "自動バックアップ",
+         "アクセスログ記録",
+         "暗号化強化"
+      ],
+      "correct":"Blobの変更をリアルタイムで追跡（Change Data Capture用途）"
+   },
+   {
+      "q":"Azure VM の予約インスタンスを購入すると最大で何％の割引が受けられますか？",
+      "choices":[
+         "最大72％",
+         "最大50％",
+         "最大30％",
+         "割引なし"
+      ],
+      "correct":"最大72％"
+   },
+   {
+      "q":"Azure Traffic Manager のルーティング方法で「Performance」が使用する基準は何ですか？",
+      "choices":[
+         "ユーザーに最も近いエンドポイント（最低遅延）",
+         "優先順位",
+         "重み付け",
+         "地理的地域"
+      ],
+      "correct":"ユーザーに最も近いエンドポイント（最低遅延）"
+   },
+   {
+      "q":"Azure Resource Manager (ARM) テンプレートを使って、リソース グループ RG1 に仮想マシンをプロビジョニングするには、どの PowerShell コマンドレットを使うべきですか？",
+      "choices":[
+         "New-AzManagementGroupDeployment",
+         "New-AzResourceGroupDeployment",
+         "New-AzSubscriptionDeployment",
+         "New-AzVM"
+      ],
+      "correct":"New-AzResourceGroupDeployment"
+   },
+   {
+      "q":"Azure BLOB ストレージにある deploy.json テンプレートを New-AzDeployment コマンドレットでデプロイする場合、どのパラメーターを使ってテンプレートを参照しますか？",
+      "choices":[
+         "Tag",
+         "Templatefile",
+         "TemplateSpecId",
+         "TemplateUri"
+      ],
+      "correct":"TemplateUri"
+   },
+   {
+      "q":"リソース グループ app-grp1 内のリソースが作成された日時を確認するには、Azure portal のどのブレードを使用しますか？",
+      "choices":[
+         "デプロイ",
+         "診断設定",
+         "デプロイ スタック",
+         "Policy"
+      ],
+      "correct":"デプロイ"
+   },
+   {
+      "q":"VM1 (Windows Server) を Subnet1 と Subnet2 の両方に接続させるには、まず何を行う必要がありますか？",
+      "choices":[
+         "Azure portal から、ネットワーク インターフェイスを追加します。",
+         "Azure portal から、IP グループを作成します。",
+         "Azure portal から、既存のネットワーク インターフェイスの IP 構成を変更します。",
+         "Windows Server にサインインし、ネットワーク ブリッジを作成します。"
+      ],
+      "correct":"Azure portal から、ネットワーク インターフェイスを追加します。"
+   },
+   {
+      "q":"米国東部リージョンの可用性セットに、2 つの障害ドメインと 10 個の更新ドメインを使って 18 台の仮想マシンをデプロイしました。計画的ハードウェア メンテナンス時、同時に使用不可になる最大の仮想マシン数はいくつですか？",
+      "choices":[
+         "2",
+         "8",
+         "9",
+         "18"
+      ],
+      "correct":"2"
+   },
+   {
+      "q":"Azure 仮想マシンで Azure Spot インスタンスを使用する場合、インスタンスが除去される原因となる可能性がある要因はどれですか？（複数選択）",
+      "choices":[
+         "インスタンスの平均 CPU 使用率",
+         "Azure 容量のニーズ",
+         "インスタンスの現在の価格",
+         "時刻"
+      ],
+      "correct":[
+         "Azure 容量のニーズ",
+         "インスタンスの現在の価格"
+      ]
+   },
+   {
+      "q":"Azure Storage アカウント vmstorageaccount1 で、Azure コンテナー container1 の永続ストレージを構成するには、どの種類のストレージを作成する必要がありますか？",
+      "choices":[
+         "BLOB コンテナー",
+         "ファイル共有",
+         "キュー",
+         "テーブル"
+      ],
+      "correct":"ファイル共有"
+   },
+   {
+      "q":"Microsoft Entra テナントにリンクされた Azure サブスクリプションで、Kubernetes API サーバーへのアクセスを制限するには、どの 2 つの方法を使用しますか？（複数選択）",
+      "choices":[
+         "API サーバーの許可済み IP 範囲",
+         "パブリック クラスター",
+         "プライベート クラスター",
+         "Azure タグ"
+      ],
+      "correct":[
+         "API サーバーの許可済み IP 範囲",
+         "プライベート クラスター"
+      ]
+   },
+   {
+      "q":"Azure サブスクリプションにある Docker コンテナー container1 を、Azure Web アプリ WebApp1 で使用できるようにするには、WebApp1 のどの設定を構成する必要がありますか？",
+      "choices":[
+         "継続的配置",
+         "料金プラン",
+         "公開",
+         "ランタイム スタック"
+      ],
+      "correct":"ランタイム スタック"
+   },
+   {
+      "q":"Azure サブスクリプションにある Azure コンテナー アプリ cont1 に、Azure Service Bus のメッセージに基づいてレプリカを作成するスケーリング ルールを追加するには、どのスケール トリガーを使用しますか？",
+      "choices":[
+         "CPU 使用率",
+         "イベント ドリブン",
+         "HTTP トラフィック",
+         "メモリ使用量"
+      ],
+      "correct":"イベント ドリブン"
+   },
+   {
+      "q":"Azure サブスクリプションにある App Service Web アプリ App1 の診断ログを、警告以上のすべてのログが格納されるように構成するには、どの種類の診断ログと重大度を有効にする必要がありますか？（複数選択）",
+      "choices":[
+         "アプリケーション ログ (BLOB)",
+         "アプリケーション ログ (ファイルシステム)",
+         "詳細なエラー メッセージ",
+         "Web サーバーのログ",
+         "警告"
+      ],
+      "correct":[
+         "アプリケーション ログ (BLOB)",
+         "詳細なエラー メッセージ",
+         "警告"
+      ]
+   },
+   {
+      "q":"Windows で実行される Azure App Service Web アプリを作成する場合で、5 インスタンスへのスケーリング、45 GB のストレージ、カスタム ドメイン名が必要で、コストを最小化したいとき、どの App Service プランを使用すべきですか？",
+      "choices":[
+         "Basic",
+         "Free",
+         "Premium",
+         "Standard"
+      ],
+      "correct":"Standard"
+   },
+   {
+      "q":"Azure サブスクリプションで、Linux ベースの Docker コンテナーに Web アプリをデプロイする場合、次の要件を満たすソリューションとしてどれを推奨しますか？\n- カスタム ドメイン名をサポート\n- 需要に応じた自動スケールアウト\n- 管理作業を最小化\n- コストを最小化",
+      "choices":[
+         "Azure App Service",
+         "Azure Container Instances",
+         "Azure Kubernetes Service (AKS)",
+         "Azure 仮想マシンのスケールセット"
+      ],
+      "correct":"Azure App Service"
+   },
+   {
+      "q":"Azure サブスクリプションで、VM501 が VM20 と通信できない問題の原因として、ネットワーク セキュリティ グループ (NSG) を疑っています。管理作業を最小限に抑えつつ、NSG が通信をブロックしているかどうかを特定するには、どの機能を使用すべきですか？",
+      "choices":[
+         "診断ログ",
+         "IP フロー検証",
+         "NSG フロー ログ",
+         "パケット キャプチャ"
+      ],
+      "correct":"IP フロー検証"
+   },
+   {
+      "q":"Log Analytics ワークスペースで作成した Azure Monitor ログ クエリの結果を共有ダッシュボードにグラフとしてピン留めする場合、表示できる最大期間は何日ですか？",
+      "choices":[
+         "14",
+         "30",
+         "90",
+         "180"
+      ],
+      "correct":"90"
+   },
+   {
+      "q":"メトリック値とアクティビティ ログイベントに基づいて Azure アラートを作成する場合、次の要件を満たすにはどの 2 つのリソースを作成する必要がありますか？（複数選択）\n- アラート通知の送信回数に制限を設定\n- アラート発生時に Azure 関数を呼び出す\n- アラートの重大度を警告に設定",
+      "choices":[
+         "アクション グループ",
+         "アラート ルール",
+         "通知",
+         "セキュリティで保護された Webhook"
+      ],
+      "correct":[
+         "アクション グループ",
+         "アラート ルール"
+      ]
+   },
+   {
+      "q":"Linux 上で実行される Azure 仮想マシンにおいて、JSON 形式でログを出力するカスタム アプリケーションのログを Log Analytics ワークスペースで収集するには、どのソリューションを使用すべきですか？",
+      "choices":[
+         "Azure VMAccess 拡張機能",
+         "カスタム スクリプト拡張機能バージョン 2",
+         "Linux 用 DSC 拡張機能",
+         "Linux 用の Azure Monitor エージェント"
+      ],
+      "correct":"Linux 用の Azure Monitor エージェント"
+   },
+   {
+      "q":"Azure にデプロイされた 100 台の仮想マシンに対して構成された Azure Monitor の CPU とメモリ使用率アラートで、50 個のアラートが [終了] 状態になっている理由は何ですか？",
+      "choices":[
+         "管理者がアラートの状態を手動で変更しました。",
+         "アラートは 60 日より前のものです。",
+         "アラート ルールに、アラートの条件を修復するアクション グループが含まれています。",
+         "アラートの原因となった条件が存在しなくなりました。"
+      ],
+      "correct":"アラートの原因となった条件が存在しなくなりました。"
+   },
+   {
+      "q":"複数の Azure 仮想マシンが Azure Recovery Services コンテナーで、既定のバックアップ ポリシーを使用して構成されている場合、仮想マシン バックアップの保有期間は何日ですか？",
+      "choices":[
+         "7 日",
+         "14 日",
+         "30 日間",
+         "90 日間"
+      ],
+      "correct":"30 日間"
+   },
+   {
+      "q":"Azure サブスクリプションで、VM1 と VM2 が Vault1（Recovery Services コンテナー）にバックアップされている場合、Vault1 を削除する前に実行する必要がある 3 つのアクションはどれですか？（複数選択）",
+      "choices":[
+         "VM1 と VM2 を削除します。",
+         "論理的な削除機能を無効にし、すべてのデータを削除します。",
+         "Vault1 で読み取りロックを有効にします。",
+         "論理的な削除状態のすべての項目を完全に削除します。",
+         "VM1 と VM2 のバックアップを停止します。"
+      ],
+      "correct":[
+         "論理的な削除機能を無効にし、すべてのデータを削除します。",
+         "論理的な削除状態のすべての項目を完全に削除します。",
+         "VM1 と VM2 のバックアップを停止します。"
+      ]
+   },
+   {
+      "q":"Azure サブスクリプションで、VNet1 と VNet2 の両方のリソースが互いにシームレスに通信できるようにするには、Azure portal でどの設定を構成する必要がありますか？",
+      "choices":[
+         "接続されているデバイス",
+         "ファイアウォール",
+         "ピアリング",
+         "サービス エンドポイント"
+      ],
+      "correct":"ピアリング"
+   },
+   {
+      "q":"Azure サブスクリプションで、ネットワーク セキュリティ グループ (NSG) に関連付けることができる 2 つのリソースはどれですか？（複数選択）",
+      "choices":[
+         "仮想ネットワーク",
+         "仮想マシン",
+         "ネットワーク インターフェイス",
+         "サブネット"
+      ],
+      "correct":[
+         "ネットワーク インターフェイス",
+         "サブネット"
+      ]
+   },
+   {
+      "q":"NSG1 に割り当てられた VM1 へのポート 80 のインターネットアクセスを許可するには、どの操作を行う必要がありますか？\nNSG1 の送信セキュリティ規則:\n- Rule1: 優先度 900, ブロック, ポート 80\n- Rule2: 優先度 1000, 許可, ポート 80",
+      "choices":[
+         "Rule2 のアクションを変更します。",
+         "Rule1 の名前を変更します。",
+         "Rule2 の優先度を変更します。",
+         "Rule2 内でソースを変更します。"
+      ],
+      "correct":"Rule2 の優先度を変更します。"
+   },
+   {
+      "q":"Windows Server を実行する複数の Azure 仮想マシンに、RDP ポートをインターネットに公開せずに接続するには、どの Azure サービスを使用すべきですか？",
+      "choices":[
+         "Azure Bastion",
+         "Azure Front Door",
+         "Azure Network Watcher",
+         "Azure Virtual Desktop"
+      ],
+      "correct":"Azure Bastion"
+   },
+   {
+      "q":"次の Azure 仮想マシンのうち、ポート 80 でインターネット経由のアクセスが可能なのはどれですか？\nNSG の設定:\n- NSG1: ポート 80 許可\n- NSG2: ポート 80 許可\n- NSG3: ポート 80 ブロック\nVM とサブネットの NSG 関連付け:\n- VM1: Subnet1 (NSG1)、NIC1 (NSG2)\n- VM2: Subnet1 (NSG1)、NIC2 (NSG3)\n- VM3: Subnet3 (NSGなし)、NIC3 (NSG3)\n- VM4: Subnet2 (NSG3)、NICなし",
+      "choices":[
+         "VM1",
+         "VM2",
+         "VM3",
+         "VM4"
+      ],
+      "correct":"VM1"
+   },
+   {
+      "q":"Azure サブスクリプションで、リソース グループ RG1 に対して、リモート デスクトップ (RDP) と HTTP トラフィックを許可する NSG1（ネットワーク セキュリティ グループ）を作成・構成するには、どの 2 つの PowerShell コマンドレットを使用する必要がありますか？（複数選択）",
+      "choices":[
+         "Add-AzLoadBalancerFrontendIpConfig",
+         "Add-AzNetworkInterfaceTapConfig",
+         "New-AzNetworkSecurityGroup",
+         "New-AzNetworkSecurityRuleConfig"
+      ],
+      "correct":[
+         "New-AzNetworkSecurityGroup",
+         "New-AzNetworkSecurityRuleConfig"
+      ]
+   },
+   {
+      "q":"Azure サブスクリプションで、contoso.com DNS ゾーンに新しいサブドメイン test.contoso.com を追加し、別の DNS サーバーに委任する場合、どのように設定すべきですか？",
+      "choices":[
+         "test.contoso.com の A レコードを追加します。",
+         "contoso.com ゾーンに test という名前の NS レコード セットを追加します。",
+         "test.contoso.com の SOA レコードを作成します。",
+         "contoso.com の A レコードを変更します。"
+      ],
+      "correct":"contoso.com ゾーンに test という名前の NS レコード セットを追加します。"
+   },
+   {
+      "q":"VNet1 上の仮想マシンが contoso.com プライベート DNS ゾーンに自動的に登録されるようにするには、どの操作を行う必要がありますか？",
+      "choices":[
+         "contoso.com に仮想ネットワーク リンクを追加します。",
+         "VNet1 に Azure DNS Private Resolver を追加します。",
+         "カスタム DNS サーバーを使用するように各仮想マシンを構成します。",
+         "カスタム DNS サーバーを使用するように VNet1 を構成します。"
+      ],
+      "correct":"contoso.com に仮想ネットワーク リンクを追加します。"
+   },
+   {
+      "q":"Azure Load Balancer を使用して Web アプリケーションをホストしている VM へのトラフィックを均一に分散するには、どの設定を変更する必要がありますか？",
+      "choices":[
+         "プールにさらに VM を追加します。",
+         "負荷分散規則の設定を調整します。",
+         "セッション永続化を無効にします。",
+         "セッション永続化 (ソース IP アフィニティ) を有効にします。"
+      ],
+      "correct":"セッション永続化を無効にします。"
+   },
+   {
+      "q":"Azure Standard Load Balancer を使用している環境で、バックエンド プール内の VM に断続的な接続問題が発生している場合、トラブルシューティングと解決のために実行すべき 3 つのアクションはどれですか？（複数選択）",
+      "choices":[
+         "正常性プローブの構成を確認します。",
+         "VM が構成されたポートに応答することを確認します。",
+         "タイムアウトの設定を増やします。",
+         "セッション永続化の設定を変更します。",
+         "VM を再起動します。",
+         "NSG 規則で受信トラフィックが許可されていることを確認します。"
+      ],
+      "correct":[
+         "正常性プローブの構成を確認します。",
+         "VM が構成されたポートに応答することを確認します。",
+         "NSG 規則で受信トラフィックが許可されていることを確認します。"
+      ]
+   },
+   {
+      "q":"Azure サブスクリプションで、storage1 ストレージ アカウントへのアクセスを、Shared Access Signature (SAS) を使用してサードパーティアプリに今後 30 日間許可するには、どの SAS を使用すべきですか？",
+      "choices":[
+         "サービス SAS",
+         "保存されているアクセス ポリシー",
+         "アカウント SAS",
+         "特定目的のためのSAS"
+      ],
+      "correct":"サービス SAS"
+   },
+   {
+      "q":"App1 アプリが storage1 ストレージ アカウントから 12 時間データを読み取れるようにし、トークンの侵害時もアクセス制御を最小限に管理するには、どの方法で SAS トークンを生成すべきですか？",
+      "choices":[
+         "アカウント SAS",
+         "Azure Storage Explorer",
+         "az storage container generate-sas コマンド",
+         "New-AzStorageAccountSASToken コマンドレット"
+      ],
+      "correct":"New-AzStorageAccountSASToken コマンドレット"
+   },
+   {
+      "q":"Azure Data Lake Storage Gen2 機能をサポートする Azure ストレージ アカウントを作成する場合、使用できるストレージ アカウントの種類はどれですか？（複数選択）",
+      "choices":[
+         "Premium ブロック BLOB",
+         "Premium ファイル共有",
+         "Standard 汎用 v2",
+         "Premium ページ BLOB"
+      ],
+      "correct":[
+         "Premium ブロック BLOB",
+         "Standard 汎用 v2"
+      ]
+   },
+   {
+      "q":"少なくとも 2 つの可用性ゾーンにデータを格納し、高可用性を提供する Azure ストレージ アカウントを作成するには、どの種類のストレージ冗長性を使用すべきですか？",
+      "choices":[
+         "geo 冗長ストレージ (GRS)",
+         "ローカル冗長ストレージ (LRS)",
+         "読み取りアクセス geo 冗長ストレージ (RA-GRS)",
+         "ゾーン冗長ストレージ (ZRS)"
+      ],
+      "correct":"ゾーン冗長ストレージ (ZRS)"
+   },
+   {
+      "q":"\\server1\\images というオンプレミス共有フォルダーのすべてのコンテンツを、Azure Storage アカウント corpimages に移行するには、使用できるコマンドはどれですか？（複数選択）",
+      "choices":[
+         "Azcopy copy \\\\server1\\images https://corpimages.blob.core.windows.net/public -recursive",
+         "Azcopy sync \\\\server1\\images https://corpimages.blob.core.windows.net/public -recursive",
+         "Get-ChildItem -Path \\\\server1\\images -Recurse | Set-AzStorageBlobContent -Container \"corpimages\"",
+         "Set-AzStorageBlobContent -Container \"ContosoUpload\" -File \"\\\\server1\\images\" -Blob \"corporateimages \""
+      ],
+      "correct":[
+         "Azcopy copy \\\\server1\\images https://corpimages.blob.core.windows.net/public -recursive",
+         "Azcopy sync \\\\server1\\images https://corpimages.blob.core.windows.net/public -recursive"
+      ]
+   },
+   {
+      "q":"Azure ストレージ アカウント storage1 が POSIX 準拠のアクセス制御リスト (ACL) をサポートするように作成するには、どのオプションを構成する必要がありますか？",
+      "choices":[
+         "アクセス層",
+         "階層型名前空間",
+         "SFTP",
+         "バージョン レベルの不変サポート"
+      ],
+      "correct":"階層型名前空間"
+   },
+   {
+      "q":"storage1 の share1 ファイル共有が大きなファイルをサポートし、最大 100 TiB を格納できるようにするには、どの PowerShell コマンドを実行する必要がありますか？（複数選択）",
+      "choices":[
+         "New-AzRmStorageShare -ResourceGroupName RG1 -Name -StorageAccountName storage1 -Name share1 -QuotaGiB 100GB",
+         "Set-AzStorageAccount -ResourceGroupName RG1 -Name storage1 -EnableLargeFileShare",
+         "Set-AzStorageAccount -ResourceGroupName RG1 -Name storage1 -Type \"Standard_RAGRS\"",
+         "Update-AzRmStorageShare -ResourceGroupName RG1 -Name -StorageAccountName storage1 -Name share1 -QuotaGiB 102400"
+      ],
+      "correct":[
+         "Set-AzStorageAccount -ResourceGroupName RG1 -Name storage1 -EnableLargeFileShare",
+         "Update-AzRmStorageShare -ResourceGroupName RG1 -Name -StorageAccountName storage1 -Name share1 -QuotaGiB 102400"
+      ]
+   },
+   {
+      "q":"Azure Storage アカウントで、BLOB が 30 日間アクセスされていない場合にクール ストレージに移動するライフサイクル管理ルールを作成する前に、最初に何を実行する必要がありますか？",
+      "choices":[
+         "アクセス追跡を有効にします。",
+         "BLOB のバージョン管理を有効にします。",
+         "BLOB インベントリを更新します。",
+         "ストレージ アカウント キーをローテーションします。"
+      ],
+      "correct":"アクセス追跡を有効にします。"
+   },
+   {
+      "q":"セキュリティで保護された場所から、SMB プロトコルを使用して Azure ファイル共有にアクセスできるようにするには、どの送信ポートを許可する必要がありますか？",
+      "choices":[
+         "80",
+         "443",
+         "445",
+         "5671"
+      ],
+      "correct":"445"
+   },
+   {
+      "q":"Microsoft Entra ID の属性に基づいてユーザーにライセンスを割り当て、管理作業を最小限にするには、どの 2 つのアクションを実行する必要がありますか？（複数選択）",
+      "choices":[
+         "動的セキュリティ グループにライセンスを割り当てます。",
+         "各ユーザーにライセンスを割り当てます。",
+         "自動割り当てポリシーを作成します。",
+         "動的セキュリティ グループを作成します。",
+         "管理単位を作成します。"
+      ],
+      "correct":[
+         "動的セキュリティ グループを作成します。",
+         "動的セキュリティ グループにライセンスを割り当てます。"
+      ]
+   },
+   {
+      "q":"contoso.com の Microsoft Entra テナントで、ゲスト招待元、ユーザー管理者、全体管理者のロール メンバーのみがゲストユーザーを招待できるようにするには、何を構成する必要がありますか？",
+      "choices":[
+         "アクセス レビュー",
+         "条件付きアクセス",
+         "クロステナント アクセス設定",
+         "外部コラボレーションの設定"
+      ],
+      "correct":"外部コラボレーションの設定"
+   },
+   {
+      "q":"オンプレミスの Active Directory と Microsoft Entra テナントに複数ユーザーがいる環境で、セルフサービス パスワード リセット (SSPR) のパスワード ライトバック機能を構成し、コストを最小限にするには、どの Microsoft Entra ID エディションを使用すべきですか？",
+      "choices":[
+         "Microsoft Entra ID Free（無料）",
+         "Microsoft Entra ID P1",
+         "Microsoft Entra ID P2"
+      ],
+      "correct":"Microsoft Entra ID P1"
+   },
+   {
+      "q":"Group1 に Microsoft 365 ライセンスを割り当てた場合、使用されるライセンスはいくつですか？\n\n条件:\n- Group1 のメンバー: User1、User2、User3\n- メンバーシップの種類: 割り当て済み\n- User3 はゲスト\n- User4 は所有者",
+      "choices":[
+         "0",
+         "1",
+         "3",
+         "4"
+      ],
+      "correct":"3"
+   },
+   {
+      "q":"User1 が外部ユーザーを Microsoft Entra テナントに招待できるようにするには、最小特権の原則に従い、どのロールを割り当てる必要がありますか？",
+      "choices":[
+         "グローバル管理者",
+         "グループ管理者",
+         "ゲスト招待元",
+         "セキュリティ管理者"
+      ],
+      "correct":"ゲスト招待元"
+   },
+   {
+      "q":"提示されたカスタム ロールが割り当てられたユーザーは、どの 2 つのアクションを実行できますか？（複数選択）\n\nカスタム ロールの内容:\n- Actions: Microsoft.Compute/*/read, Microsoft.Compute/snapshots/write, Microsoft.Compute/snapshots/read\n- NotActions: Microsoft.Compute/snapshots/delete",
+      "choices":[
+         "スナップショットを作成して削除する。",
+         "スナップショットを作成して読み取る。",
+         "仮想マシンを作成する。",
+         "仮想マシンのすべての設定を読み取る。"
+      ],
+      "correct":[
+         "スナップショットを作成して読み取る。",
+         "仮想マシンのすべての設定を読み取る。"
+      ]
+   },
+   {
+      "q":"Azure サブスクリプションにおいて、リソース グループ RG1 にカスタム ロールを割り当てるスクリプトがあります。現在のスクリプトは次の通りです。\n\n$rg = \"RG1\"\n$RoleName = \"111-222-333-444-555\"\n$Role = Get-AzRoleDefinition -Name $RoleName\nNew-AzRoleAssignment -SignInName user1@contoso.com -RoleDefinitionName $Role.Name -ResourceGroupName $rg\n\nUser1 は RG1 にアクセスできません。スクリプトが失敗しないように修正するには、どの部分を変更する必要がありますか？",
+      "choices":[
+         "$Role = Add-AzRoleDefinition -Name $RoleName",
+         "$Role = Get-AzRoleAssignment -Name $RoleName",
+         "$Role = Set-AzRoleAssignment -Name $RoleName",
+         "$RoleName = ”CustomRole1”"
+      ],
+      "correct":"$RoleName = ”CustomRole1”"
+   },
+   {
+      "q":"複数のストレージ アカウントを含む Azure サブスクリプションがあります。ユーザーに次の操作を行う権限を付与する必要があります。\n\n- ストレージ アカウント内のコンテナーを管理する\n- ストレージ アカウントのアクセス キーを表示する\n\n最小権限の原則に従うには、どのロールを割り当てるべきですか？",
+      "choices":[
+         "所有者",
+         "閲覧者",
+         "ストレージ アカウント共同作成者",
+         "ストレージ BLOB データ共同作成者"
+      ],
+      "correct":"ストレージ アカウント共同作成者"
+   },
+   {
+      "q":"あなたは、Azure 環境内のユーザー ID とガバナンスの管理を担当しています。User1 という名前の新しいユーザーが、ユーザー アカウントとグループを作成および管理し、サポート チケットを管理し、サービスの正常性を監視できることを確認する必要があります。最小権限の原則に従う場合、User1 に割り当てるべき Microsoft Entra ロールはどれですか？",
+      "choices":[
+         "ユーザー管理者",
+         "課金管理者",
+         "グローバル管理者",
+         "サービス管理者"
+      ],
+      "correct":"ユーザー管理者"
+   },
+   {
+      "q":"複数の管理グループと Azure サブスクリプションがあります。リソースが誤って削除されないようにする必要があります。削除ロックを適用できる 3 つのリソースの種類はどれですか?",
+      "choices":[
+         "管理グループ",
+         "リソース グループ",
+         "ストレージ アカウント データ",
+         "サブスクリプション",
+         "仮想マシン"
+      ],
+      "correct":[
+         "リソース グループ",
+         "サブスクリプション",
+         "仮想マシン"
+      ]
+   },
+   {
+      "q":"10 台の仮想マシンを含む Azure サブスクリプションがあります。User1 という名前のユーザーが、Azure portal を使用してすべての仮想マシンにタグを付けられるようにする必要があります。解答では、最小限の特権の原則に従う必要があります。どうすればよいでしょうか?",
+      "choices":[
+         "Azure portal から、Microsoft.Compute 仮想マシン/*/書き込みアクセス許可を持つカスタム ロールを作成します。",
+         "Azure portal から、仮想マシンのアクセス制御 (IAM) 設定を変更します。",
+         "Azure portal から、Azure サブスクリプションのポリシー設定を変更します。",
+         "コマンド ラインから、az role assignment create コマンドを実行します。"
+      ],
+      "correct":"Azure portal から、Microsoft.Compute 仮想マシン/*/書き込みアクセス許可を持つカスタム ロールを作成します。"
+   },
+   {
+      "q":"VNet1（仮想ネットワーク）があります。仮想マシンがVNet1に接続されたときに、管理者にメールが送信されるようにするには、何を作成する必要がありますか？",
+      "choices":[
+         "アクション グループ",
+         "警告処理ルール",
+         "アラート ルール",
+         "メールが有効なセキュリティ グループ"
+      ],
+      "correct":"アラート ルール"
+   },
+   {
+      "q":"Azureサブスクリプションに仮想マシン、仮想ネットワーク、アプリケーションゲートウェイ、ロードバランサーが含まれています。これらのリソースのネットワーク正常性を監視するには、どのAzureサービスを使用する必要がありますか？",
+      "choices":[
+         "Azure Monitor",
+         "Azure Network Watcher",
+         "Azure Resource Manager",
+         "ネットワーク セキュリティ グループ (NSG)"
+      ],
+      "correct":"Azure Network Watcher"
+   },
+   {
+      "q":"Azure MonitorのSecurityEventテーブルから1,000件のイベントを返すKustoクエリがあります。このクエリをAccount列で結果を集計するように構成するには、どの演算子を使用する必要がありますか？",
+      "choices":[
+         "extend",
+         "project",
+         "summarize",
+         "where"
+      ],
+      "correct":"summarize"
+   },
+   {
+      "q":"Windows Serverを実行するServer1（Azure仮想マシン）があります。Server1のファイルとフォルダーをバックアップするAzure Backupを構成するには、Server1に何をインストールする必要がありますか？",
+      "choices":[
+         "Microsoft Azure Backup Server (MABS)",
+         "Microsoft Azure Site Recovery プロバイダー",
+         "Azure Connected Machine エージェント",
+         "Microsoft Azure Recovery Services (MARS) エージェント"
+      ],
+      "correct":"Microsoft Azure Recovery Services (MARS) エージェント"
+   },
+   {
+      "q":"Azureサブスクリプションがあります。PowerShellからGet-MgUserコマンドレットを実行した結果、次の詳細が表示されます。Id: 8755b347-3545-3876-3987-999999999999  DisplayName: Ben Smith. Mail: bsmith@contoso.com  UserPrincipalName: bsmith_contoso.com#EXT#@fabrikam.com  この出力に基づいて、ユーザーについて正しい記述はどれですか？",
+      "choices":[
+         "ユーザー アカウントが無効になります。",
+         "ユーザーはテナント内のゲストです。",
+         "ユーザーには管理ロールが割り当てられます。",
+         "ユーザーが削除されます。"
+      ],
+      "correct":"ユーザーはテナント内のゲストです。"
+   },
+   {
+      "q":"Microsoft Entraテナントがあります。新規ユーザーUser1を作成し、Microsoft 365 E5ライセンスを割り当てる必要があります。ライセンス割り当て前に、User1に対してどのユーザー属性を構成する必要がありますか？",
+      "choices":[
+         "名",
+         "姓",
+         "その他のメール アドレス",
+         "利用場所",
+         "ユーザーの種類"
+      ],
+      "correct":"利用場所"
+   },
+   {
+      "q":"contoso.comというMicrosoft EntraテナントにGroup1（グループ）があり、以下のユーザーが含まれています。User1: 型=メンバー、オンプレミス同期=はい  User2: 型=メンバー、オンプレミス同期=いいえ  User3: 型=ゲスト、オンプレミス同期=いいえ  Microsoft Entra Connect Syncでパスワードライトバックが有効です。Group1でセルフサービスパスワードリセット(SSPR)を有効にしました。SSPRに登録する必要があるユーザーはどれですか？",
+      "choices":[
+         "User2 のみ",
+         "User1 と User2 のみ",
+         "User2 と User3 のみ",
+         "User1、User2、User3"
+      ],
+      "correct":"User2 と User3 のみ"
+   },
+   {
+      "q":"複数のサブスクリプションと管理グループ(MG1、MG2)、リソースグループがあります。ユーザーがすべてのサブスクリプション内のリソースを表示できるようにし、最小特権の原則でロールを割り当てる必要があります。どのロールを割り当てるべきですか？",
+      "choices":[
+         "すべてのサブスクリプションの課金閲覧者ロール",
+         "MG1 および MG2 の課金閲覧者ロール",
+         "MG1 と MG2 の共同作成者ロール",
+         "MG1 と MG2 の閲覧者ロール"
+      ],
+      "correct":"MG1 と MG2 の閲覧者ロール"
+   },
+   {
+      "q":"金融機関がAzureを実装しており、規制要件により厳密なアクセス制御が必要です。財務チームがリソースを変更せずにAzureサービスのコストを表示・予算管理できるように、サブスクリプションスコープで割り当てるべきロールはどれですか？",
+      "choices":[
+         "リーダー",
+         "請求書リーダー",
+         "投稿者",
+         "Cost Management 共同作成者"
+      ],
+      "correct":"Cost Management 共同作成者"
+   },
+   {
+      "q":"RG1（リソースグループ）を含むAzureサブスクリプションがあり、RG1には日次レポートを実行する仮想マシンが含まれています。リソースグループのコストが予算の75%を超えた場合に仮想マシンをシャットダウンさせる必要があります。実行する必要がある2つのアクションを選んでください。（複数選択）",
+      "choices":[
+         "Runbook タイプのアクション グループを作成し、[Scale Up VM] (VM のスケールアップ) を選択します。",
+         "Runbook タイプのアクション グループを作成し、アクションとして [Stop VM] (VM の停止) を選択します。",
+         "[コストの管理と請求] から、新しいコスト分析を作成します。",
+         "[コストの管理と請求] から、予算の設定を変更します。"
+      ],
+      "correct":[
+         "Runbook タイプのアクション グループを作成し、アクションとして [Stop VM] (VM の停止) を選択します。",
+         "[コストの管理と請求] から、予算の設定を変更します。"
+      ]
+   },
+   {
+      "q":"Azure Advisor を使用して、使用率が低い仮想マシン（VM）を特定し、コスト削減の推奨事項を確認するためのカテゴリはどれですか？",
+      "choices":[
+         "コスト",
+         "高可用性",
+         "オペレーショナル エクセレンス",
+         "パフォーマンス"
+      ],
+      "correct":"コスト"
+   },
+   {
+      "q":"リソースグループ RG1 内にある仮想マシン VM1 をテンプレートとして、新しい仮想マシンを作成するための有効な方法はどれですか？（3つ選択）",
+      "choices":[
+         "Azure Cloud Shell から Get-AzVM と New-AzVM を実行する",
+         "Azure Cloud Shell から Save-AzDeploymentScriptLog と New-AzResourceGroupDeployment を実行する",
+         "Azure Cloud Shell から Save-AzDeploymentTemplate と New-AzResourceGroupDeployment を実行する",
+         "リソースグループ RG1 の「テンプレートのエクスポート」からダウンロードし、Azure Cloud Shell で New-AzResourceGroupDeployment を実行する",
+         "仮想マシン VM1 の「テンプレートのエクスポート」から「デプロイ」を選択する"
+      ],
+      "correct":[
+         "Azure Cloud Shell から Save-AzDeploymentTemplate と New-AzResourceGroupDeployment を実行する",
+         "リソースグループ RG1 の「テンプレートのエクスポート」からダウンロードし、Azure Cloud Shell で New-AzResourceGroupDeployment を実行する",
+         "仮想マシン VM1 の「テンプレートのエクスポート」から「デプロイ」を選択する"
+      ]
+   },
+   {
+      "q":"Windows Server 仮想マシン VM1 の作成時に、そのマシンを仮想マシンスケールセット（VMSS）に含めるために構成すべき設定項目はどれですか？",
+      "choices":[
+         "可用性のオプション",
+         "Azure Spot インスタンス",
+         "管理",
+         "リージョン"
+      ],
+      "correct":"可用性のオプション"
+   },
+   {
+      "q":"仮想ネットワーク内の Subnet1 に接続されている仮想マシン VM1 を、Subnet2 にも直接接続したい場合、最初に行うべき作業は何ですか？",
+      "choices":[
+         "Azure portal から、ネットワーク インターフェイス（NIC）を追加する",
+         "Azure portal から、IP グループを作成する",
+         "Azure portal から、既存のネットワーク インターフェイスの IP 構成を変更する",
+         "Windows Server にサインインし、ネットワーク ブリッジを作成する"
+      ],
+      "correct":"Azure portal から、ネットワーク インターフェイス（NIC）を追加する"
+   },
+   {
+      "q":"物理インフラのメンテナンス通知を受け取った際、サービスの中断を回避するために仮想マシン（VM）を別のホストに強制的に移動（再配置）するにはどうすればよいですか？",
+      "choices":[
+         "Azure ポリシーを適用する",
+         "Azure タグを適用する",
+         "仮想マシンを別の Azure サブスクリプションに移動する",
+         "仮想マシンを再デプロイする"
+      ],
+      "correct":"仮想マシンを再デプロイする"
+   },
+   {
+      "q":"コンテナーアプリ App1 のキャッシュ更新などの補助タスクを自動化するために、メインのコンテナーと同じライフサイクルで実行するコンテナーの種類は何ですか？",
+      "choices":[
+         "BLOB",
+         "初期化コンテナー",
+         "エンドポイント",
+         "サイドカーコンテナー"
+      ],
+      "correct":"サイドカーコンテナー"
+   },
+   {
+      "q":"リソースグループ RG1 内の Web アプリ appservice1 で「無料の App Service マネージド SSL 証明書」を使用しています。リソースを RG2 へ移動するために必要な2つのアクションはどれですか？",
+      "choices":[
+         "RG2 に新しい App Service プランを作成する",
+         "RG2 に新しい Web アプリを作成する",
+         "SSL 証明書のバインドを解除（削除）する",
+         "すべてのリソースを RG1 から RG2 に移動する"
+      ],
+      "correct":[
+         "SSL 証明書のバインドを解除（削除）する",
+         "すべてのリソースを RG1 から RG2 に移動する"
+      ]
+   },
+   {
+      "q":"Web アプリ App1 にカスタムドメイン (webapp1.contoso.com) を構成する際、将来的な IP アドレスの変更に影響されずアクセスを維持できる DNS レコードの種類はどれですか？",
+      "choices":[
+         "A レコード",
+         "CNAME レコード",
+         "SOA レコード",
+         "SRV レコード",
+         "TXT レコード"
+      ],
+      "correct":"CNAME レコード"
+   },
+   {
+      "q":"仮想ネットワーク VNET1 において、すべてのネットワークトラフィックが検査用仮想マシン VM1 を通過（経由）するように設定するには、どの機能を使用しますか？",
+      "choices":[
+         "ユーザー定義ルート (UDR) を構成する",
+         "仮想ネットワークゲートウェイを作成する",
+         "既定のルートを直接編集する",
+         "システムルートを直接変更する"
+      ],
+      "correct":"ユーザー定義ルート (UDR) を構成する"
+   },
+   {
+      "q":"ネットワークセキュリティグループ NSG1 において、リモートデスクトップ (RDP) と HTTPS 通信を許可するために必要な2つのポートはどれですか？",
+      "choices":[
+         "80",
+         "25",
+         "443",
+         "587",
+         "3389"
+      ],
+      "correct":[
+         "443",
+         "3389"
+      ]
+   },
+   {
+      "q":"複数のサブネットにまたがる特定の仮想マシン群に対して、最小限の規則数でポート 8080 の受信を許可したい場合、NSG の「宛先」として何を使用すべきですか？",
+      "choices":[
+         "アプリケーションセキュリティグループ (ASG)",
+         "サービスタグ",
+         "仮想マシンのサブネット"
+      ],
+      "correct":"アプリケーションセキュリティグループ (ASG)"
+   },
+   {
+      "q":"Windows Server 仮想マシン内で、Web サーバーがポート 80 で正常にリッスン（待機）しているかどうかを、OS 内部から確認するためのコマンドはどれですか？",
+      "choices":[
+         "Get-AzVirtualNetworkUsageList",
+         "nbtstat -c",
+         "netstat -an",
+         "Test-NetConnection localhost"
+      ],
+      "correct":"netstat -an"
+   },
+   {
+      "q":"Azure Load Balancer を使用して Web サーバー（VM）群に負荷分散を行っています。接続タイムアウトの問題を解決し、かつトラフィックが最も均等に分散されるようにするには、どの分散モードを選択すべきですか？",
+      "choices":[
+         "分散モードを 5 タプル ハッシュに変更する",
+         "ロード バランサーの正常性プローブを構成する",
+         "ソース IP アフィニティ（セッション永続化）を有効にする",
+         "ロード バランサーを上位の SKU にアップグレードする"
+      ],
+      "correct":"分散モードを 5 タプル ハッシュに変更する"
+   },
+   {
+      "q":"ストレージアカウント storage1 へのパブリックインターネット経由のアクセスを完全に禁止したい場合、どの設定項目で構成を行いますか？",
+      "choices":[
+         "アクセス キー",
+         "データ保護",
+         "暗号化",
+         "ネットワーク"
+      ],
+      "correct":"ネットワーク"
+   },
+   {
+      "q":"AzCopy ツールを使用してデータを転送する場合、サポートされているストレージサービスの種類はどれですか？（2つ選択）",
+      "choices":[
+         "BLOB",
+         "ファイル",
+         "キュー",
+         "テーブル"
+      ],
+      "correct":[
+         "BLOB",
+         "ファイル"
+      ]
+   },
+   {
+      "q":"ストレージアカウント間で「オブジェクトレプリケーション」を構成したいと考えています。現在、ソース側の設定で「変更フィード」は有効ですが、「バージョン管理」は無効です。レプリケーションを可能にするために有効化すべき設定はどれですか？",
+      "choices":[
+         "BLOB の論理的な削除",
+         "Change Feed（変更フィード）",
+         "階層型名前空間",
+         "バージョン管理"
+      ],
+      "correct":"バージョン管理"
+   }
 ];
 
 // =====================
