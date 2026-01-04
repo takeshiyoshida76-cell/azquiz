@@ -984,7 +984,7 @@ const questions = [
       "correct":"Standard"
    },
    {
-      "q":"Azure サブスクリプションで、Linux ベースの Docker コンテナーに Web アプリをデプロイする場合、次の要件を満たすソリューションとしてどれを推奨しますか？\n- カスタム ドメイン名をサポート\n- 需要に応じた自動スケールアウト\n- 管理作業を最小化\n- コストを最小化",
+      "q":"Azure サブスクリプションで、Linux ベースの Docker コンテナーに Web アプリをデプロイする場合、次の要件を満たすソリューションとしてどれを推奨しますか？　- カスタム ドメイン名をサポート　- 需要に応じた自動スケールアウト　- 管理作業を最小化　- コストを最小化",
       "choices":[
          "Azure App Service",
          "Azure Container Instances",
@@ -1014,7 +1014,7 @@ const questions = [
       "correct":"90"
    },
    {
-      "q":"メトリック値とアクティビティ ログイベントに基づいて Azure アラートを作成する場合、次の要件を満たすにはどの 2 つのリソースを作成する必要がありますか？（複数選択）\n- アラート通知の送信回数に制限を設定\n- アラート発生時に Azure 関数を呼び出す\n- アラートの重大度を警告に設定",
+      "q":"メトリック値とアクティビティ ログイベントに基づいて Azure アラートを作成する場合、次の要件を満たすにはどの 2 つのリソースを作成する必要がありますか？（複数選択）　- アラート通知の送信回数に制限を設定　- アラート発生時に Azure 関数を呼び出す　- アラートの重大度を警告に設定",
       "choices":[
          "アクション グループ",
          "アラート ルール",
@@ -1095,7 +1095,7 @@ const questions = [
       ]
    },
    {
-      "q":"NSG1 に割り当てられた VM1 へのポート 80 のインターネットアクセスを許可するには、どの操作を行う必要がありますか？\nNSG1 の送信セキュリティ規則:\n- Rule1: 優先度 900, ブロック, ポート 80\n- Rule2: 優先度 1000, 許可, ポート 80",
+      "q":"NSG1 に割り当てられた VM1 へのポート 80 のインターネットアクセスを許可するには、どの操作を行う必要がありますか？　NSG1 の送信セキュリティ規則:　- Rule1: 優先度 900, ブロック, ポート 80　- Rule2: 優先度 1000, 許可, ポート 80",
       "choices":[
          "Rule2 のアクションを変更します。",
          "Rule1 の名前を変更します。",
@@ -1115,7 +1115,7 @@ const questions = [
       "correct":"Azure Bastion"
    },
    {
-      "q":"次の Azure 仮想マシンのうち、ポート 80 でインターネット経由のアクセスが可能なのはどれですか？\nNSG の設定:\n- NSG1: ポート 80 許可\n- NSG2: ポート 80 許可\n- NSG3: ポート 80 ブロック\nVM とサブネットの NSG 関連付け:\n- VM1: Subnet1 (NSG1)、NIC1 (NSG2)\n- VM2: Subnet1 (NSG1)、NIC2 (NSG3)\n- VM3: Subnet3 (NSGなし)、NIC3 (NSG3)\n- VM4: Subnet2 (NSG3)、NICなし",
+      "q":"次の Azure 仮想マシンのうち、ポート 80 でインターネット経由のアクセスが可能なのはどれですか？　NSG の設定:　- NSG1: ポート 80 許可　- NSG2: ポート 80 許可　- NSG3: ポート 80 ブロック　VM とサブネットの NSG 関連付け:　- VM1: Subnet1 (NSG1)、NIC1 (NSG2)　- VM2: Subnet1 (NSG1)、NIC2 (NSG3)　- VM3: Subnet3 (NSGなし)、NIC3 (NSG3)　- VM4: Subnet2 (NSG3)、NICなし",
       "choices":[
          "VM1",
          "VM2",
@@ -1231,8 +1231,8 @@ const questions = [
       "choices":[
          "Azcopy copy \\\\server1\\images https://corpimages.blob.core.windows.net/public -recursive",
          "Azcopy sync \\\\server1\\images https://corpimages.blob.core.windows.net/public -recursive",
-         "Get-ChildItem -Path \\\\server1\\images -Recurse | Set-AzStorageBlobContent -Container \"corpimages\"",
-         "Set-AzStorageBlobContent -Container \"ContosoUpload\" -File \"\\\\server1\\images\" -Blob \"corporateimages \""
+         "Get-ChildItem -Path \\\\server1\\images -Recurse | Set-AzStorageBlobContent -Container ”corpimages”",
+         "Set-AzStorageBlobContent -Container ”ContosoUpload” -File ”\\\\server1\\images” -Blob ”corporateimages ”"
       ],
       "correct":[
          "Azcopy copy \\\\server1\\images https://corpimages.blob.core.windows.net/public -recursive",
@@ -1254,7 +1254,7 @@ const questions = [
       "choices":[
          "New-AzRmStorageShare -ResourceGroupName RG1 -Name -StorageAccountName storage1 -Name share1 -QuotaGiB 100GB",
          "Set-AzStorageAccount -ResourceGroupName RG1 -Name storage1 -EnableLargeFileShare",
-         "Set-AzStorageAccount -ResourceGroupName RG1 -Name storage1 -Type \"Standard_RAGRS\"",
+         "Set-AzStorageAccount -ResourceGroupName RG1 -Name storage1 -Type ”Standard_RAGRS”",
          "Update-AzRmStorageShare -ResourceGroupName RG1 -Name -StorageAccountName storage1 -Name share1 -QuotaGiB 102400"
       ],
       "correct":[
@@ -1316,7 +1316,7 @@ const questions = [
       "correct":"Microsoft Entra ID P1"
    },
    {
-      "q":"Group1 に Microsoft 365 ライセンスを割り当てた場合、使用されるライセンスはいくつですか？\n\n条件:\n- Group1 のメンバー: User1、User2、User3\n- メンバーシップの種類: 割り当て済み\n- User3 はゲスト\n- User4 は所有者",
+      "q":"Group1 に Microsoft 365 ライセンスを割り当てた場合、使用されるライセンスはいくつですか？　　条件:　- Group1 のメンバー: User1、User2、User3　- メンバーシップの種類: 割り当て済み　- User3 はゲスト　- User4 は所有者",
       "choices":[
          "0",
          "1",
@@ -1336,7 +1336,7 @@ const questions = [
       "correct":"ゲスト招待元"
    },
    {
-      "q":"提示されたカスタム ロールが割り当てられたユーザーは、どの 2 つのアクションを実行できますか？（複数選択）\n\nカスタム ロールの内容:\n- Actions: Microsoft.Compute/*/read, Microsoft.Compute/snapshots/write, Microsoft.Compute/snapshots/read\n- NotActions: Microsoft.Compute/snapshots/delete",
+      "q":"提示されたカスタム ロールが割り当てられたユーザーは、どの 2 つのアクションを実行できますか？（複数選択）　　カスタム ロールの内容:　- Actions: Microsoft.Compute/*/read, Microsoft.Compute/snapshots/write, Microsoft.Compute/snapshots/read　- NotActions: Microsoft.Compute/snapshots/delete",
       "choices":[
          "スナップショットを作成して削除する。",
          "スナップショットを作成して読み取る。",
@@ -1349,7 +1349,7 @@ const questions = [
       ]
    },
    {
-      "q":"Azure サブスクリプションにおいて、リソース グループ RG1 にカスタム ロールを割り当てるスクリプトがあります。現在のスクリプトは次の通りです。\n\n$rg = \"RG1\"\n$RoleName = \"111-222-333-444-555\"\n$Role = Get-AzRoleDefinition -Name $RoleName\nNew-AzRoleAssignment -SignInName user1@contoso.com -RoleDefinitionName $Role.Name -ResourceGroupName $rg\n\nUser1 は RG1 にアクセスできません。スクリプトが失敗しないように修正するには、どの部分を変更する必要がありますか？",
+      "q":"Azure サブスクリプションにおいて、リソース グループ RG1 にカスタム ロールを割り当てるスクリプトがあります。現在のスクリプトは次の通りです。　　$rg = ”RG1”　$RoleName = ”111-222-333-444-555”　$Role = Get-AzRoleDefinition -Name $RoleName　New-AzRoleAssignment -SignInName user1@contoso.com -RoleDefinitionName $Role.Name -ResourceGroupName $rg　　User1 は RG1 にアクセスできません。スクリプトが失敗しないように修正するには、どの部分を変更する必要がありますか？",
       "choices":[
          "$Role = Add-AzRoleDefinition -Name $RoleName",
          "$Role = Get-AzRoleAssignment -Name $RoleName",
@@ -1359,7 +1359,7 @@ const questions = [
       "correct":"$RoleName = ”CustomRole1”"
    },
    {
-      "q":"複数のストレージ アカウントを含む Azure サブスクリプションがあります。ユーザーに次の操作を行う権限を付与する必要があります。\n\n- ストレージ アカウント内のコンテナーを管理する\n- ストレージ アカウントのアクセス キーを表示する\n\n最小権限の原則に従うには、どのロールを割り当てるべきですか？",
+      "q":"複数のストレージ アカウントを含む Azure サブスクリプションがあります。ユーザーに次の操作を行う権限を付与する必要があります。　　- ストレージ アカウント内のコンテナーを管理する　- ストレージ アカウントのアクセス キーを表示する　　最小権限の原則に従うには、どのロールを割り当てるべきですか？",
       "choices":[
          "所有者",
          "閲覧者",
@@ -1685,12 +1685,12 @@ const questions = [
     {
     "q": "Azure Container Apps において、ストレージキューに新しいメッセージが追加された際、自動的にリソースのクリーンアップジョブを実行するように構成したい。実行すべきコマンドはどれですか？",
     "choices": [
-      "az containerapp job create ... --trigger-type \"Event\"",
-      "az containerapp job create ... --trigger-type \"Manual\"",
-      "az containerapp job start ... --trigger-type \"Schedule\"",
-      "az containerapp job start ... --trigger-type \"Event\""
+      "az containerapp job create ... --trigger-type ”Event”",
+      "az containerapp job create ... --trigger-type ”Manual”",
+      "az containerapp job start ... --trigger-type ”Schedule”",
+      "az containerapp job start ... --trigger-type ”Event”"
     ],
-    "correct": "az containerapp job create ... --trigger-type \"Event\""
+    "correct": "az containerapp job create ... --trigger-type ”Event”"
   },
   {
     "q": "Basic 料金プランの App Service で、CPU負荷（80%超）に応じた自動スケーリングを有効にしたい。実行すべき2つのアクションはどれですか？（2つ選択）",
